@@ -1,8 +1,8 @@
-public class Time {
+public class TimeFlight {
     private int hours;
     private int minutes;
 
-    public Time(int hours, int minutes) {
+    public TimeFlight(int hours, int minutes) {
         this.hours = hours;
         this.minutes = minutes;
     }

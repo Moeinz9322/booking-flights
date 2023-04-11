@@ -6,12 +6,12 @@ public class Flight {
     private String origin;
     private String destination;
     private Date date;
-    private Time time;
+    private TimeFlight time;
     private int price;
     private int seats;
     private int capacity;
 
-    public Flight(String flightId, String origin, String destination, Date date, Time time, int price, int seats, int capacity) {
+    public Flight(String flightId, String origin, String destination, Date date, TimeFlight time, int price, int seats, int capacity) {
         this.flightId = flightId;
         this.origin = origin;
         this.destination = destination;
@@ -54,11 +54,11 @@ public class Flight {
         this.date = date;
     }
 
-    public Time getTime() {
+    public TimeFlight getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(TimeFlight time) {
         this.time = time;
     }
 
