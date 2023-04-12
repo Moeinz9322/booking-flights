@@ -17,6 +17,7 @@ public class Input {
         } while (input.equals(""));
         return input;
     }
+
     private static int inputInteger() {
         String input;
         char[] chars;
@@ -33,6 +34,7 @@ public class Input {
         } while (flag);
         return Integer.parseInt(input);
     }
+
     //not input enter
     private static int inputIntegerNotNull() {
         String input;
@@ -158,7 +160,8 @@ public class Input {
         date.setYear(String.valueOf(inputIntegerNotNull()));
         return date;
     }
-    public static Flight inputForUpdateFlight(){
+
+    public static Flight inputForUpdateFlight() {
         System.out.print("* Flight Id : ");
         Flight flight = new Flight(inputString(), null, null, null, null, 0, 0, 0);
         System.out.print("* Origin : ");
@@ -177,6 +180,7 @@ public class Input {
         flight.setCapacity(seats);
         return flight;
     }
+
     private static TimeFlight inputTime() {
         System.out.print("* hours : ");
         TimeFlight time = new TimeFlight(String.valueOf(inputInteger()), "0");

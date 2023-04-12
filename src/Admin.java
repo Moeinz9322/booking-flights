@@ -63,7 +63,8 @@ public class Admin {
         }
     }
 
-    public void removeFlight() {
+    public void removeFlight(int numberFlight) {
+        flights[numberFlight] = null;
     }
 
     public void flightSchedules() {
