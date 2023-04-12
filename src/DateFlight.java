@@ -33,4 +33,8 @@ public class DateFlight {
         this.day = day;
     }
 
+    @Override
+    public String toString() {
+        return year + "_" + month + "_" + day;
+    }
 }

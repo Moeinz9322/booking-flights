@@ -32,6 +32,8 @@ public class Input {
                 }
             }
         } while (flag);
+        if (input.equals(""))
+            input = "-1";
         return Integer.parseInt(input);
     }
 

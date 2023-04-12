@@ -22,4 +22,9 @@ public class TimeFlight {
     public void setMinutes(String minutes) {
         this.minutes = minutes;
     }
+
+    @Override
+    public String toString() {
+        return hours + ":" + minutes;
+    }
 }

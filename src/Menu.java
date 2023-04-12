@@ -133,7 +133,7 @@ public class Menu {
             System.out.println("Please check flight id :(");
             return;
         }
-        if (admin.getFlights()[numberFlight].getSeats() == admin.getFlights()[numberFlight].getCapacity()) {
+        if (admin.getFlights()[numberFlight].getSeats() != admin.getFlights()[numberFlight].getCapacity()) {
             System.out.println("You can't remove this flight because it is reserved by the user :(");
             return;
         }
@@ -154,11 +154,11 @@ public class Menu {
             System.out.println("Please check flight id :(");
             return;
         }
-        if (admin.getFlights()[numberFlight].getSeats() == admin.getFlights()[numberFlight].getCapacity()) {
+        if (admin.getFlights()[numberFlight].getSeats() != admin.getFlights()[numberFlight].getCapacity()) {
             System.out.println("You can't update this flight because it is reserved by the user :(");
             return;
         }
-        System.out.println("Do you want to remove it ?\n1) Yes\n2)No");
+        System.out.println("Do you want to remove it ?\n1) Yes\n2) No");
         String input = null;
         boolean flag = true;
         while (flag) {
