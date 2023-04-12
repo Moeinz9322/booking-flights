@@ -44,12 +44,37 @@ public class Admin {
         }
     }
 
-    public void updateFlight() {
+    public void updateFlight(Flight flight , int numberFlight) {
+        if (!flight.getFlightId().equals(""))
+            flights[numberFlight].setFlightId(flight.getFlightId());
+        if (!flight.getOrigin().equals(""))
+            flights[numberFlight].setOrigin(flight.getOrigin());
+        if (!flight.getDestination().equals(""))
+            flights[numberFlight].setDestination(flight.getDestination());
+        if (!flight.getDate().equals(""))
+            flights[numberFlight].setDate(flight.getDate());
+        if (!flight.getTime().equals(""))
+            flights[numberFlight].setTime(flight.getTime());
+        if (!String.valueOf(flight.getPrice()).equals(""))
+            flights[numberFlight].setPrice(Integer.valueOf(flight.getPrice()));
+        if (!String.valueOf(flight.getSeats()).equals("")){
+            flights[numberFlight].setSeats(Integer.valueOf(flight.getSeats()));
+            flights[numberFlight].setCapacity(Integer.valueOf(flight.getSeats()));
+        }
     }
 
     public void removeFlight() {
     }
 
     public void flightSchedules() {
+    }
+
+    public int findFlightId(String flightId) {
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && flights[i].getFlightId().equals(flightId)){
+                return i;
+            }
+        }
+        return -1;
     }
 }

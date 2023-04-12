@@ -1,4 +1,3 @@
-import java.util.Date;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message
@@ -18,20 +17,37 @@ public class Input {
         } while (input.equals(""));
         return input;
     }
-
     private static int inputInteger() {
         String input;
         char[] chars;
-        boolean flag = true;
+        boolean flag;
         do {
+            flag = false;
             input = inputString();
             chars = input.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 if (!Character.isDigit(chars[i])) {
-                    flag = false;
+                    flag = true;
                 }
             }
-        } while (input.equals("") && flag);
+        } while (flag);
+        return Integer.parseInt(input);
+    }
+    //not input enter
+    private static int inputIntegerNotNull() {
+        String input;
+        char[] chars;
+        boolean flag;
+        do {
+            flag = false;
+            input = inputString();
+            chars = input.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                if (!Character.isDigit(chars[i])) {
+                    flag = true;
+                }
+            }
+        } while (input.equals("") || flag);
         return Integer.parseInt(input);
     }
 
@@ -112,6 +128,43 @@ public class Input {
         flight.setOrigin(inputStringNotNull());
         System.out.print("* Destination : ");
         flight.setDestination(inputStringNotNull());
+        System.out.print("* Date \n");
+        flight.setDate(inputDateNotNull());
+        System.out.print("* Time \n");
+        flight.setTime(inputTimeNotNull());
+        System.out.print("* Price : ");
+        flight.setPrice(inputIntegerNotNull());
+        System.out.print("* Seats : ");
+        int seats = inputIntegerNotNull();
+        flight.setSeats(seats);
+        flight.setCapacity(seats);
+        return flight;
+    }
+
+    private static TimeFlight inputTimeNotNull() {
+        System.out.print("* hours : ");
+        TimeFlight time = new TimeFlight(String.valueOf(inputIntegerNotNull()), "0");
+        System.out.print("* Minutes : ");
+        time.setMinutes(String.valueOf(inputIntegerNotNull()));
+        return time;
+    }
+
+    private static DateFlight inputDateNotNull() {
+        System.out.print("* year : ");
+        DateFlight date = new DateFlight(String.valueOf(inputIntegerNotNull()), "0", "0");
+        System.out.print("* month : ");
+        date.setMonth(String.valueOf(inputIntegerNotNull()));
+        System.out.print("* day : ");
+        date.setYear(String.valueOf(inputIntegerNotNull()));
+        return date;
+    }
+    public static Flight inputForUpdateFlight(){
+        System.out.print("* Flight Id : ");
+        Flight flight = new Flight(inputString(), null, null, null, null, 0, 0, 0);
+        System.out.print("* Origin : ");
+        flight.setOrigin(inputString());
+        System.out.print("* Destination : ");
+        flight.setDestination(inputString());
         System.out.print("* Date :\n");
         flight.setDate(inputDate());
         System.out.print("* Time :\n");
@@ -124,7 +177,6 @@ public class Input {
         flight.setCapacity(seats);
         return flight;
     }
-
     private static TimeFlight inputTime() {
         System.out.print("* hours : ");
         TimeFlight time = new TimeFlight(String.valueOf(inputInteger()), "0");
@@ -142,4 +194,5 @@ public class Input {
         date.setYear(String.valueOf(inputInteger()));
         return date;
     }
+
 }

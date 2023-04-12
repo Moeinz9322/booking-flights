@@ -107,7 +107,7 @@ public class Menu {
                     addFlightMenu(admin);
                     break;
                 case "2", "UPDATE":
-                    admin.updateFlight();
+                    updateFlightMenu(admin);
                     break;
                 case "3", "REMOVE":
                     admin.removeFlight();
@@ -120,6 +120,25 @@ public class Menu {
                     break;
             }
         }
+    }
+
+    private static void updateFlightMenu(Admin admin) {
+        System.out.printf("%s\n%s\n%s\n%s"
+                ,":::::::::::::::::::::::::::::::::::::::::::::::"
+                ,"                   update                      "
+                ,":::::::::::::::::::::::::::::::::::::::::::::::"
+                ,"* Flight Id : "
+        );
+        int numberFlight = admin.findFlightId(Input.inputString());
+        if (numberFlight==-1){
+            System.out.println("Please check flight id :(");
+            return;
+        }
+        if (admin.getFlights()[numberFlight].getSeats() == admin.getFlights()[numberFlight].getCapacity()){
+            System.out.println("You can't update this flight because it is reserved by the user :(");
+            return;
+        }
+        admin.updateFlight(Input.inputForUpdateFlight(),numberFlight);
     }
 
     private static void addFlightMenu(Admin admin) {
