@@ -1,5 +1,5 @@
 import java.util.Scanner;
-
+//Check input if it was true return else print Check message
 public class Input {
     /**
      * @return String
@@ -26,5 +26,24 @@ public class Input {
             }
         }
         return input;
+    }
+    public static String inputInSignIn(Users users){
+        String username = inputString();
+        System.out.print("* Password : ");
+        String password = inputString();
+        String userId = users.findUsername(username);
+        switch (userId){
+            case "admin":
+                if (password.equals(users.admin.getPassword()))
+                    return "admin";
+                break;
+            case "-1":
+                return "-1";
+            default:
+                if (password.equals(users.customers[Integer.parseInt(userId)].getPassword()))
+                    return userId;
+                break;
+        }
+        return "-1";
     }
 }
