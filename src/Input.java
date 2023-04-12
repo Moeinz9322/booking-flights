@@ -32,29 +32,30 @@ public class Input {
         System.out.print("* Password : ");
         String password = inputString();
         String userId = users.findUsername(username);
-        switch (userId){
-            case "admin":
+        switch (userId) {
+            case "admin" -> {
                 if (password.equals(users.admin.getPassword()))
                     return "admin";
-                break;
-            case "-1":
+            }
+            case "-1" -> {
                 return "-1";
-            default:
+            }
+            default -> {
                 if (password.equals(users.customers[Integer.parseInt(userId)].getPassword()))
                     return userId;
-                break;
+            }
         }
         return "-1";
     }
     public static String inputInSignUp(Users users){
         String username;
         while (true){
-            username = Input.inputString();
-            if (username.equals(users.findUsername(username))){
-                System.out.println("please change your username");
+            username = inputString();
+            if (users.findUsername(username).equals("-1")) {
+                break;
             }
             else {
-                break;
+                System.out.println("please change your username");
             }
         }
         return username;
