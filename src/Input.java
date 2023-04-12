@@ -200,5 +200,22 @@ public class Input {
         date.setYear(String.valueOf(inputInteger()));
         return date;
     }
-
+    public static String inputForUserMenu(){
+        String input=null;
+        boolean flag = true;
+        while (flag){
+            input=inputString().toUpperCase();
+            switch (input){
+                case "0","1","2","3","4","5","6","CHANGE PASSWORD","SEARCH FLIGHT TICKETS","BOOKING TICKETS"
+                        ,"TICKET CANCELLATION","BOOKED TICKET","ADD CHARGE","SIGN OUT":{
+                    flag=false;
+                    break;
+                }
+                default:
+                    System.out.println("Please check your command :(");
+                    break;
+            }
+        }
+        return input;
+    }
 }
