@@ -32,4 +32,16 @@ public class Admin {
     public void setFlights(Flight[] flights) {
         this.flights = flights;
     }
+
+    public void addFlight() {
+    }
+
+    public void updateFlight() {
+    }
+
+    public void removeFlight() {
+    }
+
+    public void flightSchedules() {
+    }
 }

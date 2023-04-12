@@ -11,7 +11,7 @@ public class Menu {
         flights[2] = new Flight("BG-22", "Shiraz", "Tabriz", new Date(1401, 12, 12)
                 , new TimeFlight(22, 30), 1100000, 12, 12);
         Admin admin = new Admin("Admin", "Admin", flights);
-        Users users = new Users(new User[1000] , admin);
+        Users users = new Users(new User[1000], admin);
         String input;
         while (true) {
             System.out.print("\033[H\033[2J");//This is the command to clear the screen
@@ -42,13 +42,13 @@ public class Menu {
 
     private static void signIn(Users users) {
         System.out.printf("%s\n%s\n%s\n%s"
-                ,":::::::::::::::::::::::::::::::::::::::::::::::"
-                ,"                    Log in                     "
-                ,":::::::::::::::::::::::::::::::::::::::::::::::"
-                ,"* username : "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "                    Log in                     "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "* username : "
         );
         String userId = Input.inputInSignIn(users);
-        switch (userId){
+        switch (userId) {
             case "admin":
                 adminMenu(users.admin);
                 break;
@@ -87,11 +87,43 @@ public class Menu {
         }
     }
 
-    private static void userMenu(Users users) {
-        System.out.println("user menu");
+    private static void adminMenu(Admin admin) {
+        boolean flag = true;
+        String input;
+        while (flag) {
+            System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"
+                    , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                    , "              Admin MENU OPTIONS               "
+                    , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                    , " ............................................. "
+                    , "    <1> Add"
+                    , "    <2> update"
+                    , "    <3> Remove"
+                    , "    <4> Flight schedules"
+                    , "    <0> Sign out"
+            );
+
+            switch (Input.inputAdminMenu()) {
+                case "1", "ADD":
+                    admin.addFlight();
+                    break;
+                case "2", "UPDATE":
+                    admin.updateFlight();
+                    break;
+                case "3", "REMOVE":
+                    admin.removeFlight();
+                    break;
+                case "4", "FLIGHT SCHEDULES":
+                    admin.flightSchedules();
+                    break;
+                case "0", "SIGN OUT":
+                    flag = false;
+                    break;
+            }
+        }
     }
 
-    private static void adminMenu(Admin admin) {
-        System.out.println("admin menu");
+    private static void userMenu(Users users) {
+        System.out.println("user menu");
     }
 }

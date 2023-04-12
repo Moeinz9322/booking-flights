@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 //Check input if it was true return else print Check message
 public class Input {
     /**
@@ -27,7 +28,8 @@ public class Input {
         }
         return input;
     }
-    public static String inputInSignIn(Users users){
+
+    public static String inputInSignIn(Users users) {
         String username = inputString();
         System.out.print("* Password : ");
         String password = inputString();
@@ -47,17 +49,34 @@ public class Input {
         }
         return "-1";
     }
-    public static String inputInSignUp(Users users){
+
+    public static String inputInSignUp(Users users) {
         String username;
-        while (true){
+        while (true) {
             username = inputString();
             if (users.findUsername(username).equals("-1")) {
                 break;
-            }
-            else {
+            } else {
                 System.out.println("please change your username");
             }
         }
         return username;
+    }
+
+    public static String inputAdminMenu() {
+        boolean flag = true;
+        String input = null;
+        while (flag) {
+            input = inputString().toUpperCase();
+            switch (input) {
+                case "0", "1", "2", "3", "4", "ADD", "UPDATE", "REMOVE", "FLIGHT SCHEDULES", "SIGN OUT": {
+                    flag = false;
+                    break;
+                }
+                default:
+                    System.out.println("Please check your command :(");
+            }
+        }
+        return input;
     }
 }

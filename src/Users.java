@@ -23,13 +23,12 @@ public class Users {
         this.admin = admin;
     }
 
-    public String findUsername(String username){
-        if (username.equals(admin.getUsername())){
+    public String findUsername(String username) {
+        if (username.equals(admin.getUsername())) {
             return "admin";
-        }
-        else {
+        } else {
             for (int i = 0; i < customers.length; i++) {
-                if (customers[i] != null && username.equals(customers[i].getUsername())){
+                if (customers[i] != null && username.equals(customers[i].getUsername())) {
                     return String.valueOf(i);
                 }
             }
