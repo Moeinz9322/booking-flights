@@ -76,6 +76,7 @@ public class Menu {
                 , "* username : "
         );
         for (int i = 0; i < users.customers.length; i++) {
+            String username = Input.inputInSignUp(users);
             if (users.customers[i] == null) {
                 Ticket[] tickets = new Ticket[100];
                 users.customers[i] = new User(Input.inputString(), "0", 0, tickets, 0);

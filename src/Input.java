@@ -46,4 +46,17 @@ public class Input {
         }
         return "-1";
     }
+    public static String inputInSignUp(Users users){
+        String username;
+        while (true){
+            username = Input.inputString();
+            if (username.equals(users.findUsername(username))){
+                System.out.println("please change your username");
+            }
+            else {
+                break;
+            }
+        }
+        return username;
+    }
 }
