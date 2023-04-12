@@ -1,17 +1,14 @@
-import java.sql.Time;
-import java.util.Date;
-
 public class Flight {
     private String flightId;
     private String origin;
     private String destination;
-    private Date date;
+    private DateFlight date;
     private TimeFlight time;
     private int price;
     private int seats;
     private int capacity;
 
-    public Flight(String flightId, String origin, String destination, Date date, TimeFlight time, int price, int seats, int capacity) {
+    public Flight(String flightId, String origin, String destination, DateFlight date, TimeFlight time, int price, int seats, int capacity) {
         this.flightId = flightId;
         this.origin = origin;
         this.destination = destination;
@@ -46,11 +43,11 @@ public class Flight {
         this.destination = destination;
     }
 
-    public Date getDate() {
+    public DateFlight getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateFlight date) {
         this.date = date;
     }
 
@@ -58,8 +55,8 @@ public class Flight {
         return time;
     }
 
-    public void setTime(TimeFlight time) {
-        this.time = time;
+    public void setTime(TimeFlight timeFlight) {
+        this.time = timeFlight;
     }
 
     public int getPrice() {

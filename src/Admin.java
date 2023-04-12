@@ -33,7 +33,15 @@ public class Admin {
         this.flights = flights;
     }
 
-    public void addFlight() {
+    public void addFlight(Flight flight) {
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] == null) {
+                flights[i] = new Flight(flight.getFlightId(), flight.getOrigin()
+                        , flight.getDestination(), flight.getDate(), flight.getTime(), flight.getPrice()
+                        , flight.getSeats(), flight.getSeats());
+                break;
+            }
+        }
     }
 
     public void updateFlight() {
