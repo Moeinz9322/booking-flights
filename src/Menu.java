@@ -58,7 +58,7 @@ public class Menu {
                 Input.inputString();
                 break;
             default:
-                userMenu(users,Integer.valueOf(userId));
+                userMenu(users, Integer.valueOf(userId));
         }
     }
 
@@ -190,41 +190,41 @@ public class Menu {
         admin.addFlight(Input.inputForAddFlight());
     }
 
-    private static void userMenu(Users users , int userId) {
+    private static void userMenu(Users users, int userId) {
         boolean flag = true;
-        while (flag){
+        while (flag) {
             System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"
-                    ,":::::::::::::::::::::::::::::::::::::::::::::::"
-                    ,"            PASSENGER MENU OPTIONS             "
-                    ,":::::::::::::::::::::::::::::::::::::::::::::::"
-                    ," ............................................. "
-                    ,"    <1> Change password"
-                    ,"    <2> Search flight tickets"
-                    ,"    <3> Booking tickets"
-                    ,"    <4> Ticket cancellation"
-                    ,"    <5> Booked ticket"
-                    ,"    <6> Add charge"
-                    ,"    <0> sign out"
+                    , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                    , "            PASSENGER MENU OPTIONS             "
+                    , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                    , " ............................................. "
+                    , "    <1> Change password"
+                    , "    <2> Search flight tickets"
+                    , "    <3> Booking tickets"
+                    , "    <4> Ticket cancellation"
+                    , "    <5> Booked ticket"
+                    , "    <6> Add charge"
+                    , "    <0> sign out"
             );
 
             switch (Input.inputForUserMenu()) {
                 case "1":
-                    changePassword(users,userId);
+                    changePassword(users, userId);
                     break;
                 case "2":
                     searchFlightTicket(users.admin);
                     break;
                 case "3":
-                    bookingTicket(users,userId);
+                    bookingTicket(users, userId);
                     break;
                 case "4":
-                    ticketCancellation(users,userId);
+                    ticketCancellation(users, userId);
                     break;
                 case "5":
-                    bookedTickets(users,userId);
+                    bookedTickets(users, userId);
                     break;
                 case "6":
-                    addCharge(users,userId);
+                    addCharge(users, userId);
                     break;
                 case "0":
                     flag = false;
@@ -234,19 +234,29 @@ public class Menu {
     }
 
     private static void changePassword(Users users, int userId) {
-
+        System.out.printf("%s\n%s\n%s\n"
+                ,":::::::::::::::::::::::::::::::::::::::::::::::"
+                ,"               change password                 "
+                ,":::::::::::::::::::::::::::::::::::::::::::::::"
+        );
+        users.customers[userId].setPassword(Input.inputForChangePassword(users,userId));
+        System.out.print("Press enter to return to the previous menu ...");
+        Input.inputString();
     }
 
-    private static void searchFlightTicket(Admin admin){
+    private static void searchFlightTicket(Admin admin) {
 
     }
 
     private static void bookingTicket(Users users, int userId) {
     }
+
     private static void ticketCancellation(Users users, int userId) {
     }
+
     private static void bookedTickets(Users users, int userId) {
     }
+
     private static void addCharge(Users users, int userId) {
     }
 }

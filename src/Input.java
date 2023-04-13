@@ -200,15 +200,16 @@ public class Input {
         date.setYear(String.valueOf(inputInteger()));
         return date;
     }
-    public static String inputForUserMenu(){
-        String input=null;
+
+    public static String inputForUserMenu() {
+        String input = null;
         boolean flag = true;
-        while (flag){
-            input=inputString().toUpperCase();
-            switch (input){
-                case "0","1","2","3","4","5","6","CHANGE PASSWORD","SEARCH FLIGHT TICKETS","BOOKING TICKETS"
-                        ,"TICKET CANCELLATION","BOOKED TICKET","ADD CHARGE","SIGN OUT":{
-                    flag=false;
+        while (flag) {
+            input = inputString().toUpperCase();
+            switch (input) {
+                case "0", "1", "2", "3", "4", "5", "6", "CHANGE PASSWORD", "SEARCH FLIGHT TICKETS", "BOOKING TICKETS"
+                        , "TICKET CANCELLATION", "BOOKED TICKET", "ADD CHARGE", "SIGN OUT": {
+                    flag = false;
                     break;
                 }
                 default:
@@ -217,5 +218,26 @@ public class Input {
             }
         }
         return input;
+    }
+    public static String inputForChangePassword(Users users,int userId){
+        System.out.print("* Current Password : ");
+        if (!inputString().equals(users.customers[userId].getPassword())){
+            System.out.println("Please check your password:(");
+            return users.customers[userId].getPassword();
+        }
+        System.out.print("* New Password : ");
+        String newPassword = inputString();
+        System.out.print("* Confirm Password : ");
+        String confirmPassword;
+        while (true){
+            confirmPassword =inputString();
+            if (newPassword.equals(confirmPassword)){
+                System.out.println("successful ...");
+                return newPassword;
+            }
+            else {
+                System.out.println("The confirm password is false please check it :(");
+            }
+        }
     }
 }
