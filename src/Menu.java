@@ -1,8 +1,14 @@
-
 public class Menu {
+    public static int numberOfFlight() {
+        return 1000;
+    }
+
+    public static int numberOfUser() {
+        return 1000;
+    }
 
     public static void startMenu() {
-        Flight[] flights = new Flight[100];
+        Flight[] flights = new Flight[numberOfFlight()];
         flights[0] = new Flight("WX-12", "Yazd", "Tehran", new DateFlight("1401", "12", "10")
                 , new TimeFlight("12", "30"), 700000, 51, 51);
         flights[1] = new Flight("WZ-15", "Mashhad", "Ahvaz", new DateFlight("1401", "12", "11")
@@ -10,7 +16,7 @@ public class Menu {
         flights[2] = new Flight("BG-22", "Shiraz", "Tabriz", new DateFlight("1401", "12", "12")
                 , new TimeFlight("22", "30"), 1100000, 12, 12);
         Admin admin = new Admin("Admin", "Admin", flights);
-        Users users = new Users(new User[1000], admin);
+        Users users = new Users(new User[numberOfUser()], admin);
         String input;
         while (true) {
             System.out.print("\033[H\033[2J");//This is the command to clear the screen
@@ -235,11 +241,11 @@ public class Menu {
 
     private static void changePassword(Users users, int userId) {
         System.out.printf("%s\n%s\n%s\n"
-                ,":::::::::::::::::::::::::::::::::::::::::::::::"
-                ,"               change password                 "
-                ,":::::::::::::::::::::::::::::::::::::::::::::::"
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "               change password                 "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
         );
-        users.customers[userId].setPassword(Input.inputForChangePassword(users,userId));
+        users.customers[userId].setPassword(Input.inputForChangePassword(users, userId));
         System.out.print("Press enter to return to the previous menu ...");
         Input.inputString();
     }

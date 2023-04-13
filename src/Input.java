@@ -219,9 +219,10 @@ public class Input {
         }
         return input;
     }
-    public static String inputForChangePassword(Users users,int userId){
+
+    public static String inputForChangePassword(Users users, int userId) {
         System.out.print("* Current Password : ");
-        if (!inputString().equals(users.customers[userId].getPassword())){
+        if (!inputString().equals(users.customers[userId].getPassword())) {
             System.out.println("Please check your password:(");
             return users.customers[userId].getPassword();
         }
@@ -229,13 +230,12 @@ public class Input {
         String newPassword = inputString();
         System.out.print("* Confirm Password : ");
         String confirmPassword;
-        while (true){
-            confirmPassword =inputString();
-            if (newPassword.equals(confirmPassword)){
+        while (true) {
+            confirmPassword = inputString();
+            if (newPassword.equals(confirmPassword)) {
                 System.out.println("successful ...");
                 return newPassword;
-            }
-            else {
+            } else {
                 System.out.println("The confirm password is false please check it :(");
             }
         }

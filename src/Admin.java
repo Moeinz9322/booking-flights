@@ -1,3 +1,5 @@
+import java.util.Date;
+
 public class Admin {
     private String username;
     private String password;
@@ -116,5 +118,82 @@ public class Admin {
             }
         }
         return -1;
+    }
+
+    public int findFlightIdSimilar(String flightId) {
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && flights[i].getFlightId().equals(flightId)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void findOriginSimilar(int[] originSimilar, String origin) {
+        int number = 0;
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && flights[i].getOrigin().equals(origin)) {
+                originSimilar[number] = i;
+                number++;
+            }
+        }
+    }
+
+    public void findDestinationSimilar(int[] destinationSimilar, String destination) {
+        int number = 0;
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && flights[i].getDestination().equals(destination)) {
+                destinationSimilar[number] = i;
+                number++;
+            }
+        }
+    }
+
+    public void findDateSimilar(int[] dateSimilar, DateFlight since, DateFlight upToDate) {
+        int number = 0;
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && Integer.parseInt(since.getYear()) <= Integer.parseInt(flights[i].getDate().getYear())
+                    && Integer.parseInt(flights[i].getDate().getYear()) <= Integer.parseInt(upToDate.getYear())
+                    && Integer.parseInt(since.getMonth()) <= Integer.parseInt(flights[i].getDate().getMonth())
+                    && Integer.parseInt(flights[i].getDate().getMonth()) <= Integer.parseInt(upToDate.getMonth())
+                    && Integer.parseInt(since.getDay()) <= Integer.parseInt(flights[i].getDate().getDay())
+                    && Integer.parseInt(flights[i].getDate().getDay()) <= Integer.parseInt(upToDate.getDay())) {
+                dateSimilar[number] = i;
+                number++;
+            }
+        }
+    }
+
+    public void findTimeSimilar(int[] timeSimilar, TimeFlight since, TimeFlight upToTime) {
+        int number = 0;
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && Integer.parseInt(since.getHours()) <= Integer.parseInt(flights[i].getTime().getHours())
+                    && Integer.parseInt(flights[i].getTime().getHours()) <= Integer.parseInt(upToTime.getHours())
+                    && Integer.parseInt(since.getMinutes()) <= Integer.parseInt(flights[i].getTime().getMinutes())
+                    && Integer.parseInt(flights[i].getTime().getMinutes()) <= Integer.parseInt(upToTime.getMinutes())) {
+                timeSimilar[number] = i;
+                number++;
+            }
+        }
+    }
+
+    public void findPriceSimilar(int[] priceSimilar, int fromPrice, int upToPrice) {
+        int number = 0;
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && fromPrice <= flights[i].getPrice() && flights[i].getPrice() <= upToPrice) {
+                priceSimilar[number] = i;
+                number++;
+            }
+        }
+    }
+
+    public void findSeats(int[] seatsSimilar, int fromSeats, int upToSeats) {
+        int number = 0;
+        for (int i = 0; i < flights.length; i++) {
+            if (flights[i] != null && fromSeats <= flights[i].getSeats() && flights[i].getSeats() <= upToSeats) {
+                seatsSimilar[number] = i;
+                number++;
+            }
+        }
     }
 }
