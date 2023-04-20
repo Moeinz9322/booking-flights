@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message
@@ -170,9 +171,9 @@ public class Input {
         flight.setOrigin(inputString());
         System.out.print("* Destination : ");
         flight.setDestination(inputString());
-        System.out.print("* Date :\n");
+        System.out.print("* Date \n");
         flight.setDate(inputDate());
-        System.out.print("* Time :\n");
+        System.out.print("* Time \n");
         flight.setTime(inputTime());
         System.out.print("* Price : ");
         flight.setPrice(inputInteger());
@@ -239,5 +240,53 @@ public class Input {
                 System.out.println("The confirm password is false please check it :(");
             }
         }
+    }
+
+    public static String inputFlightId() {
+        System.out.print("* Flight Id : ");
+        return inputString();
+    }
+
+    public static String inputOrigin() {
+        System.out.print("* Origin : ");
+        return inputString();
+    }
+
+    public static String inputDestination() {
+        System.out.print("* Destination : ");
+        return inputString();
+    }
+
+    public static DateFlight inputDateForSearch() {
+        DateFlight date = new DateFlight(null, null, null);
+        System.out.print("* year : ");
+        int year = inputInteger();
+        if (year == -1) {
+            return date;
+        }
+        date.setYear(String.valueOf(year));
+        System.out.print("* month : ");
+        date.setMonth(String.valueOf(inputIntegerNotNull()));
+        System.out.print("* day : ");
+        date.setDay(String.valueOf(inputIntegerNotNull()));
+        return date;
+    }
+
+    public static TimeFlight inputTimeForSearch() {
+        TimeFlight time = new TimeFlight(null, null);
+        System.out.print("* hours : ");
+        int hours = inputInteger();
+        if (hours == -1) {
+            return time;
+        }
+        time.setHours(String.valueOf(hours));
+        System.out.print("* Minutes : ");
+        time.setMinutes(String.valueOf(inputIntegerNotNull()));
+        return time;
+    }
+
+    public static int inputPrice() {
+        System.out.print("* Price : ");
+        return inputInteger();
     }
 }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Menu {
     public static int numberOfFlight() {
         return 1000;
@@ -218,7 +220,7 @@ public class Menu {
                     changePassword(users, userId);
                     break;
                 case "2":
-                    searchFlightTicket(users.admin);
+                    searchFlight(users.admin);
                     break;
                 case "3":
                     bookingTicket(users, userId);
@@ -250,8 +252,108 @@ public class Menu {
         Input.inputString();
     }
 
-    private static void searchFlightTicket(Admin admin) {
+    private static void searchFlight(Admin admin) {
+        System.out.printf("%s\n%s\n%s\n"
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "                Search flight                  "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+        );
+        ArrayList<Integer> arraySimilarFlights = new ArrayList<>();
+        ArrayList<Integer> arrayFlights = new ArrayList<>();
+        Flight flight = new Flight(Input.inputFlightId(), Input.inputOrigin(), Input.inputDestination(), null, null, 0, 0, 0);
+        System.out.println("(Sine)");
+        flight.setDate(Input.inputDateForSearch());
+        DateFlight upToDate = null;
+        if (flight.getDate().getYear() != null) {
+            System.out.println("(Until)");
+            upToDate = Input.inputDateForSearch();
+        }
+        System.out.println("(Sine)");
+        flight.setTime(Input.inputTimeForSearch());
+        TimeFlight upToTime = null;
+        if (flight.getTime().getHours() != null) {
+            System.out.println("(Until)");
+            upToTime = Input.inputTimeForSearch();
+        }
+        System.out.println("(From)");
+        flight.setPrice(Input.inputPrice());
+        int upToPrice = 0;
+        if (flight.getPrice() != -1) {
+            System.out.println("(up to)");
+            upToPrice = Input.inputPrice();
+        }
 
+        if (!flight.getFlightId().equals("")) {
+            arraySimilarFlights.add(admin.findFlightId(flight.getFlightId()));
+        }
+        if (!flight.getOrigin().equals("")) {
+            arrayFlights = admin.findOriginSimilar(flight.getOrigin());
+            arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
+        }
+        if (!flight.getDestination().equals("")) {
+            arrayFlights = admin.findDestinationSimilar(flight.getDestination());
+            arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
+        }
+        if (flight.getDate().getYear() != null && !flight.getDate().equals("")) {
+            arrayFlights = admin.findDateSimilar(flight.getDate(), upToDate);
+            arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
+        }
+        if (flight.getTime().getHours() != null && !flight.getTime().equals("")) {
+            arrayFlights = admin.findTimeSimilar(flight.getTime(), upToTime);
+            arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
+        }
+        if (flight.getPrice() != -1) {
+            arrayFlights = admin.findPriceSimilar(flight.getPrice(), upToPrice);
+            arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
+        }
+        admin.printFlightForSearch(arraySimilarFlights);
+    }
+
+    private static ArrayList<Integer> findSimilarHomesTwoArray(ArrayList<Integer> arrayFlights, ArrayList<Integer> arraySimilarFlights) {
+        ArrayList<Integer> arraySharingArrays = new ArrayList<>();
+        if (arraySimilarFlights.size() == 0)
+            return arrayFlights;
+        if (arrayFlights.size() == 0)
+            return arraySimilarFlights;
+
+        for (int i = 0; i < arraySimilarFlights.size(); i++) {
+            for (int j = 0; j < arrayFlights.size(); j++) {
+                if (arraySimilarFlights.get(i) == arrayFlights.get(j))
+                    arraySharingArrays.add(arrayFlights.get(j));
+            }
+        }
+        arrayFlights = new ArrayList<>();
+        return arraySharingArrays;
+    }
+
+    public static void printFlights(ArrayList<Integer> arrayNumberFlight, Flight[] flights) {
+        for (int i = 0; i < arrayNumberFlight.size(); i++) {
+            if (flights[arrayNumberFlight.get(i)] != null) {
+                System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%,-12d|%-12s|\n%-12s\n"
+                        , flights[arrayNumberFlight.get(i)].getFlightId()
+                        , flights[arrayNumberFlight.get(i)].getOrigin()
+                        , flights[arrayNumberFlight.get(i)].getDestination()
+                        , flights[arrayNumberFlight.get(i)].getDate().toString()
+                        , flights[arrayNumberFlight.get(i)].getTime().toString()
+                        , flights[arrayNumberFlight.get(i)].getPrice()
+                        , flights[arrayNumberFlight.get(i)].getSeats()
+                        , "............................................................................................"
+                );
+            }
+        }
+    }
+
+    public static void printFlightsMenu() {
+        System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%s\n"
+                , "FlightId"
+                , "Origin"
+                , "Destination"
+                , "Date"
+                , "Time"
+                , "Price"
+                , "Seats"
+                , "............................................................................................"
+        );
     }
 
     private static void bookingTicket(Users users, int userId) {
