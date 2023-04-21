@@ -32,7 +32,7 @@ public class Flight {
     }
 
     public void setOrigin(String origin) {
-        this.origin = origin;
+        this.origin = origin.toLowerCase();
     }
 
     public String getDestination() {
@@ -40,7 +40,7 @@ public class Flight {
     }
 
     public void setDestination(String destination) {
-        this.destination = destination;
+        this.destination = destination.toLowerCase();
     }
 
     public DateFlight getDate() {

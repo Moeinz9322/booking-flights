@@ -93,7 +93,5 @@ public class User {
         tickets[numberTickets - 1] = null;
         numberTickets -= 1;
         System.out.println("successful ...");
-        System.out.print("Press enter to return to the previous menu ...");
-        Input.inputString();
     }
 }

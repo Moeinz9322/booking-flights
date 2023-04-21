@@ -90,30 +90,12 @@ public class Admin {
     }
 
     public void flightSchedules() {
-        System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%s\n"
-                , "FlightId"
-                , "Origin"
-                , "Destination"
-                , "Date"
-                , "Time"
-                , "Price"
-                , "Seats"
-                , "............................................................................................"
-        );
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null) {
-                System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%,-12d|%-12s|\n%-12s\n"
-                        , flights[i].getFlightId()
-                        , flights[i].getOrigin()
-                        , flights[i].getDestination()
-                        , flights[i].getDate().toString()
-                        , flights[i].getTime().toString()
-                        , flights[i].getPrice()
-                        , flights[i].getSeats()
-                        , "............................................................................................"
-                );
-            }
+        Menu.printFlightsMenu();
+        ArrayList arrayNumberFlight = new ArrayList();
+        for (int i = 0; i < 1000; i++) {
+            arrayNumberFlight.add(i);
         }
+        Menu.printFlights(arrayNumberFlight, flights);
     }
 
     public int findFlightId(String flightId) {

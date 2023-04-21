@@ -95,7 +95,7 @@ public class Input {
         return "-1";
     }
 
-    public static String inputInSignUp(Users users) {
+    public String inputInSignUp(Users users) {
         String username;
         while (true) {
             username = inputString();
@@ -108,7 +108,7 @@ public class Input {
         return username;
     }
 
-    public static String inputAdminMenu() {
+    public String inputAdminMenu() {
         boolean flag = true;
         String input = null;
         while (flag) {
@@ -126,12 +126,16 @@ public class Input {
     }
 
     public static Flight inputForAddFlight() {
-        System.out.print("* Flight Id : ");
-        Flight flight = new Flight(inputStringNotNull(), null, null, null, null, 0, 0, 0);
-        System.out.print("* Origin : ");
-        flight.setOrigin(inputStringNotNull());
-        System.out.print("* Destination : ");
-        flight.setDestination(inputStringNotNull());
+        Flight flight = new Flight(inputFlightIdNotNull(), null, null, null, null, 0, 0, 0);
+        String origin = inputOriginNotNull();
+        String destination = inputDestinationNotNull();
+        while (true) {
+            if (!origin.equals(destination))
+                break;
+            destination = inputStringNotNull();
+        }
+        flight.setOrigin(origin);
+        flight.setDestination(destination);
         System.out.print("* Date \n");
         flight.setDate(inputDateNotNull());
         System.out.print("* Time \n");
@@ -164,12 +168,8 @@ public class Input {
     }
 
     public static Flight inputForUpdateFlight() {
-        System.out.print("* Flight Id : ");
-        Flight flight = new Flight(inputString(), null, null, null, null, 0, 0, 0);
-        System.out.print("* Origin : ");
-        flight.setOrigin(inputString());
-        System.out.print("* Destination : ");
-        flight.setDestination(inputString());
+        Flight flight = new Flight(inputFlightId(), inputOrigin(), inputDestination(), null, null, 0, 0, 0);
+
         System.out.print("* Date \n");
         flight.setDate(inputDate());
         System.out.print("* Time \n");
@@ -246,14 +246,29 @@ public class Input {
         return inputString();
     }
 
+    public static String inputFlightIdNotNull() {
+        System.out.print("* Flight Id : ");
+        return inputStringNotNull();
+    }
+
     public static String inputOrigin() {
         System.out.print("* Origin : ");
-        return inputString();
+        return inputString().toLowerCase();
+    }
+
+    public static String inputOriginNotNull() {
+        System.out.print("* Origin : ");
+        return inputStringNotNull().toLowerCase();
     }
 
     public static String inputDestination() {
         System.out.print("* Destination : ");
-        return inputString();
+        return inputString().toLowerCase();
+    }
+
+    public static String inputDestinationNotNull() {
+        System.out.print("* Destination : ");
+        return inputStringNotNull().toLowerCase();
     }
 
     public static DateFlight inputDateForSearch() {

@@ -1,26 +1,28 @@
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Menu {
 
     public static void startMenu(Users users) {
+        Menu menu = new Menu();
         String input;
         while (true) {
-            System.out.print("\033[H\033[2J");//This is the command to clear the screen
-            printMenu();
+            clearScreen();
+            menu.printMenu();
             input = Input.inputInStartMenu();
-            System.out.print("\033[H\033[2J");//This is the command to clear the screen
+            clearScreen();
             switch (input) {
                 case "1", "SIGN IN":
-                    signIn(users);
+                    menu.signIn(users);
                     break;
                 case "2", "SIGN UP":
-                    signUp(users);
+                    menu.signUp(users);
                     break;
             }
         }
     }
 
-    private static void printMenu() {
+    private void printMenu() {
         System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "    WELCOME TO AIRLINE RESERVATION SYSTEM      "
@@ -31,7 +33,8 @@ public class Menu {
         );
     }
 
-    private static void signIn(Users users) {
+    private void signIn(Users users) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                    Log in                     "
@@ -57,14 +60,16 @@ public class Menu {
     /**
      * sign in for user
      */
-    private static void signUp(Users users) {
+    private void signUp(Users users) {
+        clearScreen();
+        Input input = new Input();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                    Sign up                    "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* username : "
         );
-        String username = Input.inputInSignUp(users);
+        String username = input.inputInSignUp(users);
         for (int i = 0; i < users.customers.length; i++) {
             if (users.customers[i] == null) {
                 Ticket[] tickets = new Ticket[100];
@@ -74,11 +79,15 @@ public class Menu {
                 break;
             }
         }
+        System.out.println("successful ...");
+        pauseInputEnter();
     }
 
     private static void adminMenu(Admin admin) {
+        Input input = new Input();
         boolean flag = true;
         while (flag) {
+            clearScreen();
             System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"
                     , ":::::::::::::::::::::::::::::::::::::::::::::::"
                     , "              Admin MENU OPTIONS               "
@@ -91,7 +100,7 @@ public class Menu {
                     , "    <0> Sign out"
             );
 
-            switch (Input.inputAdminMenu()) {
+            switch (input.inputAdminMenu()) {
                 case "1", "ADD":
                     addFlightMenu(admin);
                     break;
@@ -103,6 +112,7 @@ public class Menu {
                     break;
                 case "4", "FLIGHT SCHEDULES":
                     admin.flightSchedules();
+                    pauseInputEnter();
                     break;
                 case "0", "SIGN OUT":
                     flag = false;
@@ -112,6 +122,7 @@ public class Menu {
     }
 
     private static void removeFlight(Admin admin) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   remove                      "
@@ -121,10 +132,12 @@ public class Menu {
         int numberFlight = admin.findFlightId(Input.inputString());
         if (numberFlight == -1) {
             System.out.println("Please check flight id :(");
+            pauseInputEnter();
             return;
         }
         if (admin.getFlights()[numberFlight].getSeats() != admin.getFlights()[numberFlight].getCapacity()) {
             System.out.println("You can't remove this flight because it is reserved by the user :(");
+            pauseInputEnter();
             return;
         }
         admin.removeFlight(numberFlight);
@@ -133,6 +146,7 @@ public class Menu {
     }
 
     private static void updateFlightMenu(Admin admin) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   update                      "
@@ -148,6 +162,7 @@ public class Menu {
             System.out.println("You can't update this flight because it is reserved by the user :(");
             return;
         }
+        //can remove in update
         System.out.println("Do you want to remove it ?\n1) Yes\n2) No");
         String input = null;
         boolean flag = true;
@@ -162,27 +177,31 @@ public class Menu {
                     break;
             }
         }
-        if (input.equals("1") || input.equals("YES")) {
+        if (input.equals("1") || input.equals("YES")) {//can remove in update
             admin.removeFlight(numberFlight);
+            pauseInputEnter();
             return;
         }
         admin.updateFlight(Input.inputForUpdateFlight(), numberFlight);
-        System.out.println("successful :) ...\n Press enter to return to the previous menu");
-        Input.inputString();
+        System.out.println("successful :) ...");
+        pauseInputEnter();
     }
 
     private static void addFlightMenu(Admin admin) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                     Add                       "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
         );
         admin.addFlight(Input.inputForAddFlight());
+        pauseInputEnter();
     }
 
     private static void userMenu(Users users, int userId) {
         boolean flag = true;
         while (flag) {
+            clearScreen();
             System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"
                     , ":::::::::::::::::::::::::::::::::::::::::::::::"
                     , "            PASSENGER MENU OPTIONS             "
@@ -224,17 +243,18 @@ public class Menu {
     }
 
     private static void changePassword(Users users, int userId) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "               change password                 "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
         );
         users.customers[userId].setPassword(Input.inputForChangePassword(users, userId));
-        System.out.print("Press enter to return to the previous menu ...");
-        Input.inputString();
+        pauseInputEnter();
     }
 
     private static void searchFlight(Admin admin) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                Search flight                  "
@@ -289,15 +309,14 @@ public class Menu {
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
         admin.printFlightForSearch(arraySimilarFlights);
+        pauseInputEnter();
     }
 
     private static ArrayList<Integer> findSimilarHomesTwoArray(ArrayList<Integer> arrayFlights, ArrayList<Integer> arraySimilarFlights) {
         ArrayList<Integer> arraySharingArrays = new ArrayList<>();
-        if (arraySimilarFlights.size() == 0)
-            return arrayFlights;
-        if (arrayFlights.size() == 0)
-            return arraySimilarFlights;
-
+        if (arraySimilarFlights.size() == 0) {
+            arraySimilarFlights = arrayFlights;
+        }
         for (int i = 0; i < arraySimilarFlights.size(); i++) {
             for (int j = 0; j < arrayFlights.size(); j++) {
                 if (arraySimilarFlights.get(i) == arrayFlights.get(j))
@@ -309,12 +328,15 @@ public class Menu {
     }
 
     public static void printFlights(ArrayList<Integer> arrayNumberFlight, Flight[] flights) {
+        clearScreen();
         for (int i = 0; i < arrayNumberFlight.size(); i++) {
             if (flights[arrayNumberFlight.get(i)] != null) {
-                System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%,-12d|%-12s|\n%-12s\n"
+                System.out.printf("|%-12s|%s%-11s|%s%-11s|%-12s|%-12s|%,-12d|%-12s|\n%-12s\n"
                         , flights[arrayNumberFlight.get(i)].getFlightId()
-                        , flights[arrayNumberFlight.get(i)].getOrigin()
-                        , flights[arrayNumberFlight.get(i)].getDestination()
+                        , flights[arrayNumberFlight.get(i)].getOrigin().substring(0, 1).toUpperCase()
+                        , flights[arrayNumberFlight.get(i)].getOrigin().substring(1)
+                        , flights[arrayNumberFlight.get(i)].getDestination().substring(0, 1).toUpperCase()
+                        , flights[arrayNumberFlight.get(i)].getDestination().substring(1)
                         , flights[arrayNumberFlight.get(i)].getDate().toString()
                         , flights[arrayNumberFlight.get(i)].getTime().toString()
                         , flights[arrayNumberFlight.get(i)].getPrice()
@@ -339,6 +361,7 @@ public class Menu {
     }
 
     private static void bookingTicket(Users users, int userId) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                Booking ticket                 "
@@ -348,24 +371,27 @@ public class Menu {
         int numberFlight = users.admin.findFlightId(flightId);
         if (numberFlight == -1) {
             System.out.println("Please check Flight Id");
+            pauseInputEnter();
             return;
         }
 
         if (users.admin.getFlights()[numberFlight].getPrice() > users.customers[userId].getCharge()) {
             System.out.println("Please check your charge ...");
+            pauseInputEnter();
             return;
         }
 
         if (users.admin.getFlights()[numberFlight].getSeats() < 0) {
             System.out.println("It has no capacity");
+            pauseInputEnter();
             return;
         }
         users.bookingTicket(userId, numberFlight);
-        System.out.print("Press enter to return to the previous menu ...");
-        Input.inputString();
+        pauseInputEnter();
     }
 
     private static void ticketCancellation(Users users, int userId) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "              Ticket cancellation              "
@@ -379,9 +405,11 @@ public class Menu {
         } else {
             users.customers[userId].ticketCancellation(users.admin, numberTicket);
         }
+        pauseInputEnter();
     }
 
     private static void bookedTickets(Users users, int userId) {
+        clearScreen();
         System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%s\n"
                 , "FlightId"
                 , "Origin"
@@ -406,11 +434,11 @@ public class Menu {
                 );
             }
         }
-        System.out.print("Press enter to return to the previous menu ...");
-        Input.inputString();
+        pauseInputEnter();
     }
 
     private static void addCharge(Users users, int userId) {
+        clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   Add charge                  "
@@ -421,6 +449,14 @@ public class Menu {
         users.customers[userId].setCharge(users.customers[userId].getCharge() + Input.inputIntegerNotNull());
 
         System.out.println("charge : " + users.customers[userId].getCharge());
+        pauseInputEnter();
+    }
+
+    private static void clearScreen() {
+        System.out.print("\033[H\033[2J");//This is the command to clear the screen
+    }
+
+    private static void pauseInputEnter() {
         System.out.print("Press enter to return to the previous menu ...");
         Input.inputString();
     }
