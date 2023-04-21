@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class Menu {
 
@@ -255,10 +254,11 @@ public class Menu {
 
     private static void searchFlight(Admin admin) {
         clearScreen();
-        System.out.printf("%s\n%s\n%s\n"
+        System.out.printf("%s\n%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                Search flight                  "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                ,"Press enter if you want to skip the field , otherwise type the desired word in front of it"
         );
         ArrayList<Integer> arraySimilarFlights = new ArrayList<>();
         ArrayList<Integer> arrayFlights = new ArrayList<>();
@@ -268,14 +268,22 @@ public class Menu {
         DateFlight upToDate = null;
         if (flight.getDate().getYear() != null) {
             System.out.println("(Until)");
-            upToDate = Input.inputDateForSearch();
+            while (true){
+                upToDate = Input.inputDateForSearch();
+                if (upToDate.getYear()!=null)
+                    break;
+            }
         }
         System.out.println("(Sine)");
         flight.setTime(Input.inputTimeForSearch());
         TimeFlight upToTime = null;
         if (flight.getTime().getHours() != null) {
             System.out.println("(Until)");
-            upToTime = Input.inputTimeForSearch();
+            while (true){
+                upToTime = Input.inputTimeForSearch();
+                if (upToTime.getHours()!=null)
+                    break;
+            }
         }
         System.out.println("(From)");
         flight.setPrice(Input.inputPrice());
