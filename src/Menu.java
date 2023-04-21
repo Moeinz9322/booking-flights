@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Menu {
     public static int numberOfFlight() {
@@ -388,5 +389,17 @@ public class Menu {
     }
 
     private static void addCharge(Users users, int userId) {
+        System.out.printf("%s\n%s\n%s\n%s"
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "                   Add charge                  "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "* price : "
+        );
+
+        users.customers[userId].setCharge(users.customers[userId].getCharge() + Input.inputIntegerNotNull());
+
+        System.out.println("charge : " + users.customers[userId].getCharge());
+        System.out.print("Press enter to return to the previous menu ...");
+        Input.inputString();
     }
 }

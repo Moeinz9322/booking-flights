@@ -11,7 +11,7 @@ public class Input {
         return input0.nextLine();
     }
 
-    private static String inputStringNotNull() {
+    public static String inputStringNotNull() {
         String input;
         do {
             input = inputString();
@@ -19,7 +19,7 @@ public class Input {
         return input;
     }
 
-    private static int inputInteger() {
+    public static int inputInteger() {
         String input;
         char[] chars;
         boolean flag;
@@ -39,7 +39,7 @@ public class Input {
     }
 
     //not input enter
-    private static int inputIntegerNotNull() {
+    public static int inputIntegerNotNull() {
         String input;
         char[] chars;
         boolean flag;
