@@ -39,7 +39,7 @@ public class Users {
     }
 
     public void bookingTicket(int userId, int numberFlight) {
-        admin.changeSeats(admin, numberFlight, admin.getFlights()[numberFlight].getSeats() - 1);
+        admin.changeSeats(numberFlight, admin.getFlights()[numberFlight].getSeats() - 1);
 
         customers[userId].setCharge(admin.getFlights()[numberFlight].getPrice() - 1);
 

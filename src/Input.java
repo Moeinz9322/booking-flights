@@ -1,4 +1,3 @@
-import java.util.Date;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message

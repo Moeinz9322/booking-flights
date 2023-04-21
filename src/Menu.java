@@ -385,6 +385,20 @@ public class Menu {
     }
 
     private static void ticketCancellation(Users users, int userId) {
+        System.out.printf("%s\n%s\n%s\n%s"
+                ,":::::::::::::::::::::::::::::::::::::::::::::::"
+                ,"              Ticket cancellation              "
+                ,":::::::::::::::::::::::::::::::::::::::::::::::"
+                ,"* Ticket Id : "
+        );
+        int ticketId = Input.inputIntegerNotNull();
+        int numberTicket = users.customers[userId].findTicketId(ticketId);
+        if (numberTicket == -1){
+            System.out.println("Please check Ticket Id ...");
+        }
+        else {
+            users.customers[userId].ticketCancellation(users.admin,numberTicket);
+        }
     }
 
     private static void bookedTickets(Users users, int userId) {

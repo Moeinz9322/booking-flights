@@ -186,7 +186,7 @@ public class Admin {
         return priceSimilar;
     }
 
-    public void changeSeats(Admin admin, int numberFlight, int seats) {
-        admin.flights[numberFlight].setSeats(seats);
+    public void changeSeats(int numberFlight, int seats) {
+        flights[numberFlight].setSeats(seats);
     }
 }

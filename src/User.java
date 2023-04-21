@@ -76,4 +76,25 @@ public class User {
             }
         }
     }
+
+    public int findTicketId(int ticketId) {
+        for (int i = 0; i < tickets.length; i++) {
+            if (tickets[i] != null && ticketId == tickets[i].getTicketId()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void ticketCancellation(Admin admin, int numberTicket) {
+        int numberFlight;
+        numberFlight = admin.findFlightId(tickets[numberTicket].getFlightId());
+        admin.changeSeats(numberFlight, admin.getFlights()[numberFlight].getSeats() + 1);
+        tickets[numberTicket] = tickets[numberTickets - 1];
+        tickets[numberTickets - 1] = null;
+        numberTickets -= 1;
+        System.out.println("successful ...");
+        System.out.print("Press enter to return to the previous menu ...");
+        Input.inputString();
+    }
 }
