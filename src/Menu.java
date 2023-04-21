@@ -72,7 +72,7 @@ public class Menu {
         for (int i = 0; i < users.customers.length; i++) {
             if (users.customers[i] == null) {
                 Ticket[] tickets = new Ticket[100];
-                users.customers[i] = new User(username, "0", 0, tickets, 0);
+                users.customers[i] = new User(username, "0", 0, tickets, 0, 1000);
                 System.out.print("* password : ");
                 users.customers[i].setPassword(Input.inputString());
                 break;
@@ -200,6 +200,7 @@ public class Menu {
     }
 
     private static void userMenu(Users users, int userId) {
+        Menu menu = new Menu();
         boolean flag = true;
         while (flag) {
             clearScreen();
@@ -225,16 +226,16 @@ public class Menu {
                     searchFlight(users.admin);
                     break;
                 case "3":
-                    bookingTicket(users, userId);
+                    menu.bookingTicket(users, userId);
                     break;
                 case "4":
-                    ticketCancellation(users, userId);
+                    menu.ticketCancellation(users, userId);
                     break;
                 case "5":
-                    bookedTickets(users, userId);
+                    menu.bookedTickets(users, userId);
                     break;
                 case "6":
-                    addCharge(users, userId);
+                    menu.addCharge(users, userId);
                     break;
                 case "0":
                     flag = false;
@@ -260,7 +261,7 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                Search flight                  "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
-                ,"Press enter if you want to skip the field , otherwise type the desired word in front of it"
+                , "Press enter if you want to skip the field , otherwise type the desired word in front of it"
         );
         ArrayList<Integer> arraySimilarFlights = new ArrayList<>();
         ArrayList<Integer> arrayFlights = new ArrayList<>();
@@ -268,11 +269,11 @@ public class Menu {
         System.out.println("(Sine)");
         flight.setDateFlight(Input.inputDateForSearch());
         DateFlight upToDate = null;
-        if (flight.getDateFlight().getYear() != null) {
+        if (flight.getDateFlight().getYear() != null) {// چک می‌شود اگر از زمان را کاربر پر نکرده باشد تا زمان را از او نگیرد
             System.out.println("(Until)");
-            while (true){
+            while (true) {
                 upToDate = Input.inputDateForSearch();
-                if (upToDate.getYear()!=null)
+                if (upToDate.getYear() != null)
                     break;
             }
         }
@@ -281,9 +282,9 @@ public class Menu {
         TimeFlight upToTime = null;
         if (flight.getTimeFlight().getHours() != null) {
             System.out.println("(Until)");
-            while (true){
+            while (true) {
                 upToTime = Input.inputTimeForSearch();
-                if (upToTime.getHours()!=null)
+                if (upToTime.getHours() != null)
                     break;
             }
         }
@@ -294,10 +295,10 @@ public class Menu {
             System.out.println("(up to)");
             upToPrice = Input.inputPrice();
         }
-
+        // در هر if بررسی می‌شود که آیا همچین فیلدی وجود دارد و سپس با فیلد های قبل مقایسه می‌شود
         if (!flight.getFlightId().equals("")) {
-            int flightNumber=admin.findFlightId(flight.getFlightId());
-            if (flightNumber!=-1){
+            int flightNumber = admin.findFlightId(flight.getFlightId());
+            if (flightNumber != -1) {
                 arraySimilarFlights.add(flightNumber);
             }
         }
@@ -325,6 +326,13 @@ public class Menu {
         pauseInputEnter();
     }
 
+    /**
+     * این تابع برای مقایسه دو آرایه است که اگر در سرچ چند فیلد فیلتر شده باشد را مقایسه می‌کند
+     *
+     * @param arrayFlights
+     * @param arraySimilarFlights
+     * @return لیستی از پرواز های با فیلد مشابه
+     */
     private static ArrayList<Integer> findSimilarHomesTwoArray(ArrayList<Integer> arrayFlights, ArrayList<Integer> arraySimilarFlights) {
         ArrayList<Integer> arraySharingArrays = new ArrayList<>();
         if (arraySimilarFlights.size() == 0) {
@@ -373,7 +381,7 @@ public class Menu {
         );
     }
 
-    private static void bookingTicket(Users users, int userId) {
+    private void bookingTicket(Users users, int userId) {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -403,7 +411,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void ticketCancellation(Users users, int userId) {
+    private void ticketCancellation(Users users, int userId) {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -411,7 +419,7 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* Ticket Id : "
         );
-        int ticketId = Integer.parseInt(Input.inputIntegerNotNullToString());
+        String ticketId = Input.inputStringNotNull();
         int numberTicket = users.customers[userId].findTicketId(ticketId);
         if (numberTicket == -1) {
             System.out.println("Please check Ticket Id ...");
@@ -421,7 +429,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void bookedTickets(Users users, int userId) {
+    private void bookedTickets(Users users, int userId) {
         clearScreen();
         System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%s\n"
                 , "FlightId"
@@ -450,7 +458,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void addCharge(Users users, int userId) {
+    private void addCharge(Users users, int userId) {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"

@@ -35,6 +35,11 @@ public class Admin {
         this.flights = flights;
     }
 
+    /**
+     * این تابع پرواز فرستاده شده را به لیست پرواز ها اضافه می‌کند
+     *
+     * @param flight
+     */
     public void addFlight(Flight flight) {
         for (int i = 0; i < flights.length; i++) {
             if (flights[i] == null) {
@@ -98,6 +103,12 @@ public class Admin {
         Menu.printFlights(arrayNumberFlight, flights);
     }
 
+    /**
+     * این تابع شماره پروازه هایی که آیدی یکسان با آیدی فرستاده شده دارند را محاسبه می‌کند
+     *
+     * @param flightId
+     * @return
+     */
     public int findFlightId(String flightId) {
         for (int i = 0; i < flights.length; i++) {
             if (flights[i] != null && flights[i].getFlightId().equals(flightId)) {
@@ -107,6 +118,12 @@ public class Admin {
         return -1;
     }
 
+    /**
+     * این تابع شماره پروازه هایی که مبدا یکسان با مبدا فرستاده شده دارند را محاسبه می‌کند
+     *
+     * @param origin
+     * @return numberOfFlights
+     */
     public ArrayList<Integer> findOriginSimilar(String origin) {
         ArrayList<Integer> originSimilar = new ArrayList<>();
         for (int i = 0; i < flights.length; i++) {
@@ -117,6 +134,12 @@ public class Admin {
         return originSimilar;
     }
 
+    /**
+     * این تابع شماره پروازه هایی که مقصدی مثل مقصد فرستاده شده دارند را محاسبه می‌کند
+     *
+     * @param destination
+     * @return numberOfFlights
+     */
     public ArrayList<Integer> findDestinationSimilar(String destination) {
         ArrayList<Integer> destinationSimilar = new ArrayList<>();
         for (int i = 0; i < flights.length; i++) {
@@ -127,6 +150,13 @@ public class Admin {
         return destinationSimilar;
     }
 
+    /**
+     * این تابع شماره پروازه هایی که در بازه زمانی (تاریخ) فرستاده شده است را محاسبه می‌کند
+     *
+     * @param since
+     * @param until
+     * @return numberOfFlights
+     */
     public ArrayList<Integer> findDateSimilar(DateFlight since, DateFlight until) {
         ArrayList<Integer> dateSimilar = new ArrayList<>();
         double sinceDate = 10000 * Integer.parseInt(since.getYear()) + 100 * Integer.parseInt(since.getMonth()) + Integer.parseInt(since.getDay());
@@ -144,6 +174,13 @@ public class Admin {
         return dateSimilar;
     }
 
+    /**
+     * این تابع شماره پروازه هایی که در بازه زمانی (ساعت) فرستاده شده است را محاسبه می‌کند
+     *
+     * @param since
+     * @param until
+     * @return numberOfFlights
+     */
     public ArrayList<Integer> findTimeSimilar(TimeFlight since, TimeFlight until) {
         ArrayList<Integer> timeSimilar = new ArrayList<>();
         double sinceTime = 100 * Integer.parseInt(since.getHours()) + Integer.parseInt(since.getMinutes());
@@ -157,6 +194,13 @@ public class Admin {
         return timeSimilar;
     }
 
+    /**
+     * این تابع شماره پروازه هایی که در بازه قیمت فرستاده شده است را محاسبه می‌کند
+     *
+     * @param fromPrice
+     * @param upToPrice
+     * @return numberOfFlights
+     */
     public ArrayList<Integer> findPriceSimilar(int fromPrice, int upToPrice) {
         ArrayList<Integer> priceSimilar = new ArrayList<>();
         for (int i = 0; i < flights.length; i++) {

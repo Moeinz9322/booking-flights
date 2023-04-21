@@ -5,9 +5,9 @@ public class Ticket {
     private DateFlight date;
     private TimeFlight time;
     private int price;
-    private int ticketId;
+    private String ticketId;
 
-    public Ticket(String flightId, String origin, String destination, DateFlight date, TimeFlight time, int price, int ticketId) {
+    public Ticket(String flightId, String origin, String destination, DateFlight date, TimeFlight time, int price, String ticketId) {
         this.flightId = flightId;
         this.origin = origin;
         this.destination = destination;
@@ -65,11 +65,11 @@ public class Ticket {
         this.price = price;
     }
 
-    public int getTicketId() {
+    public String getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(int ticketId) {
+    public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
     }
 }
