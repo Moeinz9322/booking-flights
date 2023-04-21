@@ -1,6 +1,3 @@
-import java.sql.Time;
-import java.util.Date;
-
 public class Ticket {
     private String flightId;
     private String origin;

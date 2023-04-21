@@ -1,25 +1,8 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Menu {
-    public static int numberOfFlight() {
-        return 1000;
-    }
 
-    public static int numberOfUser() {
-        return 1000;
-    }
-
-    public static void startMenu() {
-        Flight[] flights = new Flight[numberOfFlight()];
-        flights[0] = new Flight("WX-12", "Yazd", "Tehran", new DateFlight("1401", "12", "10")
-                , new TimeFlight("12", "30"), 700000, 51, 51);
-        flights[1] = new Flight("WZ-15", "Mashhad", "Ahvaz", new DateFlight("1401", "12", "11")
-                , new TimeFlight("08", "00"), 900000, 245, 245);
-        flights[2] = new Flight("BG-22", "Shiraz", "Tabriz", new DateFlight("1401", "12", "12")
-                , new TimeFlight("22", "30"), 1100000, 12, 12);
-        Admin admin = new Admin("Admin", "Admin", flights);
-        Users users = new Users(new User[numberOfUser()], admin);
+    public static void startMenu(Users users) {
         String input;
         while (true) {
             System.out.print("\033[H\033[2J");//This is the command to clear the screen
@@ -73,8 +56,6 @@ public class Menu {
 
     /**
      * sign in for user
-     *
-     * @param users
      */
     private static void signUp(Users users) {
         System.out.printf("%s\n%s\n%s\n%s"
@@ -386,18 +367,17 @@ public class Menu {
 
     private static void ticketCancellation(Users users, int userId) {
         System.out.printf("%s\n%s\n%s\n%s"
-                ,":::::::::::::::::::::::::::::::::::::::::::::::"
-                ,"              Ticket cancellation              "
-                ,":::::::::::::::::::::::::::::::::::::::::::::::"
-                ,"* Ticket Id : "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "              Ticket cancellation              "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "* Ticket Id : "
         );
         int ticketId = Input.inputIntegerNotNull();
         int numberTicket = users.customers[userId].findTicketId(ticketId);
-        if (numberTicket == -1){
+        if (numberTicket == -1) {
             System.out.println("Please check Ticket Id ...");
-        }
-        else {
-            users.customers[userId].ticketCancellation(users.admin,numberTicket);
+        } else {
+            users.customers[userId].ticketCancellation(users.admin, numberTicket);
         }
     }
 

@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.Scanner;
 
 public class User {
     private String username;

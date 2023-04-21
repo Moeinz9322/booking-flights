@@ -1,5 +1,3 @@
-import java.util.Random;
-
 public class Users {
     User[] customers;
     Admin admin;

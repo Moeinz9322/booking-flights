@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Admin {
     private String username;
@@ -74,10 +73,10 @@ public class Admin {
         }
         flights[numberFlight].setTime(timeFlight);
         if (!String.valueOf(flight.getPrice()).equals("-1"))
-            flights[numberFlight].setPrice(Integer.valueOf(flight.getPrice()));
+            flights[numberFlight].setPrice(flight.getPrice());
         if (!String.valueOf(flight.getSeats()).equals("-1")) {
-            flights[numberFlight].setSeats(Integer.valueOf(flight.getSeats()));
-            flights[numberFlight].setCapacity(Integer.valueOf(flight.getSeats()));
+            flights[numberFlight].setSeats(flight.getSeats());
+            flights[numberFlight].setCapacity(flight.getSeats());
         }
     }
 
@@ -165,11 +164,11 @@ public class Admin {
 
     public ArrayList<Integer> findTimeSimilar(TimeFlight since, TimeFlight until) {
         ArrayList<Integer> timeSimilar = new ArrayList<>();
-        double sinceTime = Integer.parseInt(since.getHours()) + Integer.parseInt(since.getMinutes()) / 100;
-        double upToTime = Integer.parseInt(until.getHours()) + Integer.parseInt(until.getMinutes()) / 100;
+        double sinceTime = 100 * Integer.parseInt(since.getHours()) + Integer.parseInt(since.getMinutes());
+        double upToTime = 100 * Integer.parseInt(until.getHours()) + Integer.parseInt(until.getMinutes());
         for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && sinceTime <= Integer.parseInt(flights[i].getTime().getHours()) + Integer.parseInt(flights[i].getTime().getMinutes()) / 100
-                    && Integer.parseInt(flights[i].getTime().getHours()) + Integer.parseInt(flights[i].getTime().getMinutes()) / 100 <= upToTime) {
+            if (flights[i] != null && sinceTime <= 100 * Integer.parseInt(flights[i].getTime().getHours()) + Integer.parseInt(flights[i].getTime().getMinutes())
+                    && 100 * Integer.parseInt(flights[i].getTime().getHours()) + Integer.parseInt(flights[i].getTime().getMinutes()) <= upToTime) {
                 timeSimilar.add(i);
             }
         }
