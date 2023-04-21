@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message
@@ -68,7 +69,7 @@ public class Input {
                 break;
             } else {
                 System.out.println("Please check your command :(");
-                input = inputString();
+                input = inputString().toUpperCase();
             }
         }
         return input;
@@ -150,20 +151,52 @@ public class Input {
     }
 
     private static TimeFlight inputTimeNotNull() {
+        String hours;
+        String minutes;
         System.out.print("* hours : ");
-        TimeFlight time = new TimeFlight(inputIntegerNotNullToString(), "0");
+        while (true){
+            hours=inputIntegerNotNullToString();
+            if (hours.length()<3&&Integer.parseInt(hours)<24){
+                break;
+            }
+        }
         System.out.print("* Minutes : ");
-        time.setMinutes(inputIntegerNotNullToString());
+        while (true){
+           minutes=inputIntegerNotNullToString();
+            if (minutes.length()<3&&Integer.parseInt(minutes)<60){
+                break;
+            }
+        }
+        TimeFlight time = new TimeFlight(hours, minutes);
         return time;
     }
 
     private static DateFlight inputDateNotNull() {
+        String year;
+        String month;
+        String day;
         System.out.print("* year : ");
-        DateFlight date = new DateFlight(inputIntegerNotNullToString(), "0", "0");
+        while (true){
+            year=inputIntegerNotNullToString();
+            if (year.length()<5){
+                break;
+            }
+        }
         System.out.print("* month : ");
-        date.setMonth(inputIntegerNotNullToString());
+        while (true){
+            month=inputIntegerNotNullToString();
+            if (month.length()<3){
+                break;
+            }
+        }
         System.out.print("* day : ");
-        date.setDay(inputIntegerNotNullToString());
+        while (true){
+            day=inputIntegerNotNullToString();
+            if (day.length()<3){
+                break;
+            }
+        }
+        DateFlight date=new DateFlight(year, month, day);
         return date;
     }
 

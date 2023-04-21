@@ -155,10 +155,12 @@ public class Menu {
         int numberFlight = admin.findFlightId(Input.inputString());
         if (numberFlight == -1) {
             System.out.println("Please check flight id :(");
+            pauseInputEnter();
             return;
         }
         if (admin.getFlights()[numberFlight].getSeats() != admin.getFlights()[numberFlight].getCapacity()) {
             System.out.println("You can't update this flight because it is reserved by the user :(");
+            pauseInputEnter();
             return;
         }
         //can remove in update
@@ -294,7 +296,10 @@ public class Menu {
         }
 
         if (!flight.getFlightId().equals("")) {
-            arraySimilarFlights.add(admin.findFlightId(flight.getFlightId()));
+            int flightNumber=admin.findFlightId(flight.getFlightId());
+            if (flightNumber!=-1){
+                arraySimilarFlights.add(flightNumber);
+            }
         }
         if (!flight.getOrigin().equals("")) {
             arrayFlights = admin.findOriginSimilar(flight.getOrigin());
