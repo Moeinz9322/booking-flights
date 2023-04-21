@@ -380,12 +380,40 @@ public class Menu {
             return;
         }
         users.bookingTicket(userId, numberFlight);
+        System.out.print("Press enter to return to the previous menu ...");
+        Input.inputString();
     }
 
     private static void ticketCancellation(Users users, int userId) {
     }
 
     private static void bookedTickets(Users users, int userId) {
+        System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%s\n"
+                , "FlightId"
+                , "Origin"
+                , "Destination"
+                , "Date"
+                , "Time"
+                , "Price"
+                , "Ticket Id"
+                , "............................................................................................"
+        );
+        for (int i = 0; i < users.customers[userId].getNumberTickets(); i++) {
+            if (users.customers[userId].getTickets()[i] != null) {
+                System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%-12s\n"
+                        , users.customers[userId].getTickets()[i].getFlightId()
+                        , users.customers[userId].getTickets()[i].getOrigin()
+                        , users.customers[userId].getTickets()[i].getDestination()
+                        , users.customers[userId].getTickets()[i].getDate()
+                        , users.customers[userId].getTickets()[i].getTime()
+                        , users.customers[userId].getTickets()[i].getPrice()
+                        , users.customers[userId].getTickets()[i].getTicketId()
+                        , "............................................................................................"
+                );
+            }
+        }
+        System.out.print("Press enter to return to the previous menu ...");
+        Input.inputString();
     }
 
     private static void addCharge(Users users, int userId) {
