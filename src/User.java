@@ -1,3 +1,6 @@
+import java.util.Random;
+import java.util.Scanner;
+
 public class User {
     private String username;
     private String password;
@@ -51,5 +54,26 @@ public class User {
 
     public void setNumberTickets(int numberTickets) {
         this.numberTickets = numberTickets;
+    }
+
+    public void addTicket(Admin admin, int numberFlight) {
+
+        int ticketId;
+        int numberTicket;
+        Random random = new Random();
+        ticketId = random.nextInt();
+
+
+        numberTickets += 1;
+        for (int i = 0; i < numberTickets; i++) {
+            if (tickets[i] == null) {
+                tickets[i] = new Ticket(admin.getFlights()[numberFlight].getFlightId(), admin.getFlights()[numberFlight].getOrigin()
+                        , admin.getFlights()[numberFlight].getDestination(), admin.getFlights()[numberFlight].getDate()
+                        , admin.getFlights()[numberFlight].getTime(), admin.getFlights()[numberFlight].getPrice(), ticketId);
+                numberTicket = i;
+                System.out.println(tickets[numberTicket].getTicketId());
+                break;
+            }
+        }
     }
 }

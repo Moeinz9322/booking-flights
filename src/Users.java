@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Users {
     User[] customers;
     Admin admin;
@@ -34,5 +36,15 @@ public class Users {
             }
         }
         return "-1";
+    }
+
+    public void bookingTicket(int userId, int numberFlight) {
+        admin.changeSeats(admin, numberFlight, admin.getFlights()[numberFlight].getSeats() - 1);
+
+        customers[userId].setCharge(admin.getFlights()[numberFlight].getPrice() - 1);
+
+        customers[userId].setNumberTickets(customers[userId].getNumberTickets() + 1);
+
+        customers[userId].addTicket(admin, numberFlight);
     }
 }

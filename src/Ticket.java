@@ -5,12 +5,12 @@ public class Ticket {
     private String flightId;
     private String origin;
     private String destination;
-    private Date date;
-    private Time time;
+    private DateFlight date;
+    private TimeFlight time;
     private int price;
     private int ticketId;
 
-    public Ticket(String flightId, String origin, String destination, Date date, Time time, int price, int ticketId) {
+    public Ticket(String flightId, String origin, String destination, DateFlight date, TimeFlight time, int price, int ticketId) {
         this.flightId = flightId;
         this.origin = origin;
         this.destination = destination;
@@ -44,19 +44,19 @@ public class Ticket {
         this.destination = destination;
     }
 
-    public Date getDate() {
+    public DateFlight getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateFlight date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public TimeFlight getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(TimeFlight time) {
         this.time = time;
     }
 

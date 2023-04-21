@@ -357,6 +357,28 @@ public class Menu {
     }
 
     private static void bookingTicket(Users users, int userId) {
+        System.out.printf("%s\n%s\n%s\n"
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+                , "                Booking ticket                 "
+                , ":::::::::::::::::::::::::::::::::::::::::::::::"
+        );
+        String flightId = Input.inputFlightId();
+        int numberFlight = users.admin.findFlightId(flightId);
+        if (numberFlight == -1) {
+            System.out.println("Please check Flight Id");
+            return;
+        }
+
+        if (users.admin.getFlights()[numberFlight].getPrice() > users.customers[userId].getCharge()) {
+            System.out.println("Please check your charge ...");
+            return;
+        }
+
+        if (users.admin.getFlights()[numberFlight].getSeats() < 0) {
+            System.out.println("It has no capacity");
+            return;
+        }
+        users.bookingTicket(userId, numberFlight);
     }
 
     private static void ticketCancellation(Users users, int userId) {
