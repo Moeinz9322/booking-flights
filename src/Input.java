@@ -38,7 +38,7 @@ public class Input {
     }
 
     //not input enter
-    public static int inputIntegerNotNull() {
+    public static String inputIntegerNotNullToString() {
         String input;
         char[] chars;
         boolean flag;
@@ -52,7 +52,7 @@ public class Input {
                 }
             }
         } while (input.equals("") || flag);
-        return Integer.parseInt(input);
+        return input;
     }
 
     /**
@@ -137,13 +137,13 @@ public class Input {
         flight.setOrigin(origin);
         flight.setDestination(destination);
         System.out.print("* Date \n");
-        flight.setDate(inputDateNotNull());
+        flight.setDateFlight(inputDateNotNull());
         System.out.print("* Time \n");
-        flight.setTime(inputTimeNotNull());
+        flight.setTimeFlight(inputTimeNotNull());
         System.out.print("* Price : ");
-        flight.setPrice(inputIntegerNotNull());
+        flight.setPrice(Integer.valueOf(inputIntegerNotNullToString()));
         System.out.print("* Seats : ");
-        int seats = inputIntegerNotNull();
+        int seats = Integer.parseInt(inputIntegerNotNullToString());
         flight.setSeats(seats);
         flight.setCapacity(seats);
         return flight;
@@ -151,19 +151,19 @@ public class Input {
 
     private static TimeFlight inputTimeNotNull() {
         System.out.print("* hours : ");
-        TimeFlight time = new TimeFlight(String.valueOf(inputIntegerNotNull()), "0");
+        TimeFlight time = new TimeFlight(inputIntegerNotNullToString(), "0");
         System.out.print("* Minutes : ");
-        time.setMinutes(String.valueOf(inputIntegerNotNull()));
+        time.setMinutes(inputIntegerNotNullToString());
         return time;
     }
 
     private static DateFlight inputDateNotNull() {
         System.out.print("* year : ");
-        DateFlight date = new DateFlight(String.valueOf(inputIntegerNotNull()), "0", "0");
+        DateFlight date = new DateFlight(inputIntegerNotNullToString(), "0", "0");
         System.out.print("* month : ");
-        date.setMonth(String.valueOf(inputIntegerNotNull()));
+        date.setMonth(inputIntegerNotNullToString());
         System.out.print("* day : ");
-        date.setYear(String.valueOf(inputIntegerNotNull()));
+        date.setDay(inputIntegerNotNullToString());
         return date;
     }
 
@@ -171,9 +171,9 @@ public class Input {
         Flight flight = new Flight(inputFlightId(), inputOrigin(), inputDestination(), null, null, 0, 0, 0);
 
         System.out.print("* Date \n");
-        flight.setDate(inputDate());
+        flight.setDateFlight(inputDate());
         System.out.print("* Time \n");
-        flight.setTime(inputTime());
+        flight.setTimeFlight(inputTime());
         System.out.print("* Price : ");
         flight.setPrice(inputInteger());
         System.out.print("* Seats : ");
@@ -197,7 +197,7 @@ public class Input {
         System.out.print("* month : ");
         date.setMonth(String.valueOf(inputInteger()));
         System.out.print("* day : ");
-        date.setYear(String.valueOf(inputInteger()));
+        date.setDay(String.valueOf(inputInteger()));
         return date;
     }
 
@@ -280,9 +280,9 @@ public class Input {
         }
         date.setYear(String.valueOf(year));
         System.out.print("* month : ");
-        date.setMonth(String.valueOf(inputIntegerNotNull()));
+        date.setMonth(String.valueOf(inputIntegerNotNullToString()));
         System.out.print("* day : ");
-        date.setDay(String.valueOf(inputIntegerNotNull()));
+        date.setDay(String.valueOf(inputIntegerNotNullToString()));
         return date;
     }
 
@@ -295,7 +295,7 @@ public class Input {
         }
         time.setHours(String.valueOf(hours));
         System.out.print("* Minutes : ");
-        time.setMinutes(String.valueOf(inputIntegerNotNull()));
+        time.setMinutes(String.valueOf(inputIntegerNotNullToString()));
         return time;
     }
 

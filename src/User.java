@@ -67,8 +67,8 @@ public class User {
         for (int i = 0; i < numberTickets; i++) {
             if (tickets[i] == null) {
                 tickets[i] = new Ticket(admin.getFlights()[numberFlight].getFlightId(), admin.getFlights()[numberFlight].getOrigin()
-                        , admin.getFlights()[numberFlight].getDestination(), admin.getFlights()[numberFlight].getDate()
-                        , admin.getFlights()[numberFlight].getTime(), admin.getFlights()[numberFlight].getPrice(), ticketId);
+                        , admin.getFlights()[numberFlight].getDestination(), admin.getFlights()[numberFlight].getDateFlight()
+                        , admin.getFlights()[numberFlight].getTimeFlight(), admin.getFlights()[numberFlight].getPrice(), ticketId);
                 numberTicket = i;
                 System.out.println(tickets[numberTicket].getTicketId());
                 break;

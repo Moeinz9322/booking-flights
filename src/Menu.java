@@ -264,9 +264,9 @@ public class Menu {
         ArrayList<Integer> arrayFlights = new ArrayList<>();
         Flight flight = new Flight(Input.inputFlightId(), Input.inputOrigin(), Input.inputDestination(), null, null, 0, 0, 0);
         System.out.println("(Sine)");
-        flight.setDate(Input.inputDateForSearch());
+        flight.setDateFlight(Input.inputDateForSearch());
         DateFlight upToDate = null;
-        if (flight.getDate().getYear() != null) {
+        if (flight.getDateFlight().getYear() != null) {
             System.out.println("(Until)");
             while (true){
                 upToDate = Input.inputDateForSearch();
@@ -275,9 +275,9 @@ public class Menu {
             }
         }
         System.out.println("(Sine)");
-        flight.setTime(Input.inputTimeForSearch());
+        flight.setTimeFlight(Input.inputTimeForSearch());
         TimeFlight upToTime = null;
-        if (flight.getTime().getHours() != null) {
+        if (flight.getTimeFlight().getHours() != null) {
             System.out.println("(Until)");
             while (true){
                 upToTime = Input.inputTimeForSearch();
@@ -304,12 +304,12 @@ public class Menu {
             arrayFlights = admin.findDestinationSimilar(flight.getDestination());
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
-        if (flight.getDate().getYear() != null && !flight.getDate().equals("")) {
-            arrayFlights = admin.findDateSimilar(flight.getDate(), upToDate);
+        if (flight.getDateFlight().getYear() != null && !flight.getDateFlight().equals("")) {
+            arrayFlights = admin.findDateSimilar(flight.getDateFlight(), upToDate);
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
-        if (flight.getTime().getHours() != null && !flight.getTime().equals("")) {
-            arrayFlights = admin.findTimeSimilar(flight.getTime(), upToTime);
+        if (flight.getTimeFlight().getHours() != null && !flight.getTimeFlight().equals("")) {
+            arrayFlights = admin.findTimeSimilar(flight.getTimeFlight(), upToTime);
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
         if (flight.getPrice() != -1) {
@@ -345,8 +345,8 @@ public class Menu {
                         , flights[arrayNumberFlight.get(i)].getOrigin().substring(1)
                         , flights[arrayNumberFlight.get(i)].getDestination().substring(0, 1).toUpperCase()
                         , flights[arrayNumberFlight.get(i)].getDestination().substring(1)
-                        , flights[arrayNumberFlight.get(i)].getDate().toString()
-                        , flights[arrayNumberFlight.get(i)].getTime().toString()
+                        , flights[arrayNumberFlight.get(i)].getDateFlight().toString()
+                        , flights[arrayNumberFlight.get(i)].getTimeFlight().toString()
                         , flights[arrayNumberFlight.get(i)].getPrice()
                         , flights[arrayNumberFlight.get(i)].getSeats()
                         , "............................................................................................"
@@ -406,7 +406,7 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* Ticket Id : "
         );
-        int ticketId = Input.inputIntegerNotNull();
+        int ticketId = Integer.parseInt(Input.inputIntegerNotNullToString());
         int numberTicket = users.customers[userId].findTicketId(ticketId);
         if (numberTicket == -1) {
             System.out.println("Please check Ticket Id ...");
@@ -454,7 +454,7 @@ public class Menu {
                 , "* price : "
         );
 
-        users.customers[userId].setCharge(users.customers[userId].getCharge() + Input.inputIntegerNotNull());
+        users.customers[userId].setCharge(users.customers[userId].getCharge() + Integer.parseInt(Input.inputIntegerNotNullToString()));
 
         System.out.println("charge : " + users.customers[userId].getCharge());
         pauseInputEnter();

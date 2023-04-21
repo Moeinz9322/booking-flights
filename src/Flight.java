@@ -2,18 +2,18 @@ public class Flight {
     private String flightId;
     private String origin;
     private String destination;
-    private DateFlight date;
-    private TimeFlight time;
+    private DateFlight dateFlight;
+    private TimeFlight timeFlight;
     private int price;
     private int seats;
     private int capacity;
 
-    public Flight(String flightId, String origin, String destination, DateFlight date, TimeFlight time, int price, int seats, int capacity) {
+    public Flight(String flightId, String origin, String destination, DateFlight dateFlight, TimeFlight timeFlight, int price, int seats, int capacity) {
         this.flightId = flightId;
         this.origin = origin;
         this.destination = destination;
-        this.date = date;
-        this.time = time;
+        this.dateFlight = dateFlight;
+        this.timeFlight = timeFlight;
         this.price = price;
         this.seats = seats;
         this.capacity = capacity;
@@ -32,7 +32,7 @@ public class Flight {
     }
 
     public void setOrigin(String origin) {
-        this.origin = origin.toLowerCase();
+        this.origin = origin;
     }
 
     public String getDestination() {
@@ -40,23 +40,23 @@ public class Flight {
     }
 
     public void setDestination(String destination) {
-        this.destination = destination.toLowerCase();
+        this.destination = destination;
     }
 
-    public DateFlight getDate() {
-        return date;
+    public DateFlight getDateFlight() {
+        return dateFlight;
     }
 
-    public void setDate(DateFlight date) {
-        this.date = date;
+    public void setDateFlight(DateFlight dateFlight) {
+        this.dateFlight = dateFlight;
     }
 
-    public TimeFlight getTime() {
-        return time;
+    public TimeFlight getTimeFlight() {
+        return timeFlight;
     }
 
-    public void setTime(TimeFlight timeFlight) {
-        this.time = timeFlight;
+    public void setTimeFlight(TimeFlight timeFlight) {
+        this.timeFlight = timeFlight;
     }
 
     public int getPrice() {

@@ -39,7 +39,7 @@ public class Admin {
         for (int i = 0; i < flights.length; i++) {
             if (flights[i] == null) {
                 flights[i] = new Flight(flight.getFlightId(), flight.getOrigin()
-                        , flight.getDestination(), flight.getDate(), flight.getTime(), flight.getPrice()
+                        , flight.getDestination(), flight.getDateFlight(), flight.getTimeFlight(), flight.getPrice()
                         , flight.getSeats(), flight.getSeats());
                 break;
             }
@@ -53,25 +53,25 @@ public class Admin {
             flights[numberFlight].setOrigin(flight.getOrigin());
         if (!flight.getDestination().equals(""))
             flights[numberFlight].setDestination(flight.getDestination());
-        DateFlight dateFlight = new DateFlight(flights[numberFlight].getDate().getYear(), flights[numberFlight].getDate().getMonth(), flights[numberFlight].getDate().getDay());
-        if (!flight.getDate().getYear().equals("-1")) {
-            dateFlight.setYear(flight.getDate().getYear());
+        DateFlight dateFlight = new DateFlight(flights[numberFlight].getDateFlight().getYear(), flights[numberFlight].getDateFlight().getMonth(), flights[numberFlight].getDateFlight().getDay());
+        if (!flight.getDateFlight().getYear().equals("-1")) {
+            dateFlight.setYear(flight.getDateFlight().getYear());
         }
-        if (!flight.getDate().getMonth().equals("-1")) {
-            dateFlight.setMonth(flight.getDate().getMonth());
+        if (!flight.getDateFlight().getMonth().equals("-1")) {
+            dateFlight.setMonth(flight.getDateFlight().getMonth());
         }
-        if (!flight.getDate().getDay().equals("-1")) {
-            dateFlight.setDay(flight.getDate().getDay());
+        if (!flight.getDateFlight().getDay().equals("-1")) {
+            dateFlight.setDay(flight.getDateFlight().getDay());
         }
-        flights[numberFlight].setDate(dateFlight);
-        TimeFlight timeFlight = new TimeFlight(flights[numberFlight].getTime().getHours(), flights[numberFlight].getTime().getMinutes());
-        if (!flight.getTime().getHours().equals("-1")) {
-            timeFlight.setHours(flight.getTime().getHours());
+        flights[numberFlight].setDateFlight(dateFlight);
+        TimeFlight timeFlight = new TimeFlight(flights[numberFlight].getTimeFlight().getHours(), flights[numberFlight].getTimeFlight().getMinutes());
+        if (!flight.getTimeFlight().getHours().equals("-1")) {
+            timeFlight.setHours(flight.getTimeFlight().getHours());
         }
-        if (!flight.getTime().getMinutes().equals("-1")) {
-            timeFlight.setMinutes(flight.getTime().getMinutes());
+        if (!flight.getTimeFlight().getMinutes().equals("-1")) {
+            timeFlight.setMinutes(flight.getTimeFlight().getMinutes());
         }
-        flights[numberFlight].setTime(timeFlight);
+        flights[numberFlight].setTimeFlight(timeFlight);
         if (!String.valueOf(flight.getPrice()).equals("-1"))
             flights[numberFlight].setPrice(flight.getPrice());
         if (!String.valueOf(flight.getSeats()).equals("-1")) {
@@ -132,12 +132,12 @@ public class Admin {
         double sinceDate = 10000 * Integer.parseInt(since.getYear()) + 100 * Integer.parseInt(since.getMonth()) + Integer.parseInt(since.getDay());
         double upToDate = 10000 * Integer.parseInt(until.getYear()) + 100 * Integer.parseInt(until.getMonth()) + Integer.parseInt(until.getDay());
         for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && sinceDate <= 10000 * Integer.parseInt(flights[i].getDate().getYear()) +
-                    Integer.parseInt(flights[i].getDate().getMonth()) * 100 +
-                    Integer.parseInt(flights[i].getDate().getDay()) &&
-                    10000 * Integer.parseInt(flights[i].getDate().getYear()) +
-                            Integer.parseInt(flights[i].getDate().getMonth()) * 100 +
-                            Integer.parseInt(flights[i].getDate().getDay()) <= upToDate) {
+            if (flights[i] != null && sinceDate <= 10000 * Integer.parseInt(flights[i].getDateFlight().getYear()) +
+                    Integer.parseInt(flights[i].getDateFlight().getMonth()) * 100 +
+                    Integer.parseInt(flights[i].getDateFlight().getDay()) &&
+                    10000 * Integer.parseInt(flights[i].getDateFlight().getYear()) +
+                            Integer.parseInt(flights[i].getDateFlight().getMonth()) * 100 +
+                            Integer.parseInt(flights[i].getDateFlight().getDay()) <= upToDate) {
                 dateSimilar.add(i);
             }
         }
@@ -149,8 +149,8 @@ public class Admin {
         double sinceTime = 100 * Integer.parseInt(since.getHours()) + Integer.parseInt(since.getMinutes());
         double upToTime = 100 * Integer.parseInt(until.getHours()) + Integer.parseInt(until.getMinutes());
         for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && sinceTime <= 100 * Integer.parseInt(flights[i].getTime().getHours()) + Integer.parseInt(flights[i].getTime().getMinutes())
-                    && 100 * Integer.parseInt(flights[i].getTime().getHours()) + Integer.parseInt(flights[i].getTime().getMinutes()) <= upToTime) {
+            if (flights[i] != null && sinceTime <= 100 * Integer.parseInt(flights[i].getTimeFlight().getHours()) + Integer.parseInt(flights[i].getTimeFlight().getMinutes())
+                    && 100 * Integer.parseInt(flights[i].getTimeFlight().getHours()) + Integer.parseInt(flights[i].getTimeFlight().getMinutes()) <= upToTime) {
                 timeSimilar.add(i);
             }
         }
