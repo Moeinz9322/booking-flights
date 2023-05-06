@@ -111,6 +111,7 @@ public class User {
         admin.changeSeats(numberFlight, admin.getFlights()[numberFlight].getSeats() + 1);
         tickets[numberTicket] = tickets[numberTickets - 1];
         tickets[numberTickets - 1] = null;
+        charge+=admin.getFlights()[numberFlight].getPrice();
         numberTickets -= 1;
         System.out.println("successful ...");
     }
