@@ -78,17 +78,14 @@ public class User {
         int numberTicket;
         Random random = new Random();
         ticketId1 = random.nextInt();
-        if (ticketId1 < 0)
-            ticketId1 *= -1;
+        if (ticketId1 < 0) ticketId1 *= -1;
         ticketId += 1;
         String ticketId2 = ticketId1 + String.valueOf(ticketId);
 
         numberTickets += 1;
         for (int i = 0; i < numberTickets; i++) {
             if (tickets[i] == null) {
-                tickets[i] = new Ticket(admin.getFlights()[numberFlight].getFlightId(), admin.getFlights()[numberFlight].getOrigin()
-                        , admin.getFlights()[numberFlight].getDestination(), admin.getFlights()[numberFlight].getDateFlight()
-                        , admin.getFlights()[numberFlight].getTimeFlight(), admin.getFlights()[numberFlight].getPrice(), ticketId2);
+                tickets[i] = new Ticket(admin.getFlights()[numberFlight].getFlightId(), admin.getFlights()[numberFlight].getOrigin(), admin.getFlights()[numberFlight].getDestination(), admin.getFlights()[numberFlight].getDateFlight(), admin.getFlights()[numberFlight].getTimeFlight(), admin.getFlights()[numberFlight].getPrice(), ticketId2);
                 numberTicket = i;
                 System.out.println(tickets[numberTicket].getTicketId());
                 break;
@@ -111,7 +108,7 @@ public class User {
         admin.changeSeats(numberFlight, admin.getFlights()[numberFlight].getSeats() + 1);
         tickets[numberTicket] = tickets[numberTickets - 1];
         tickets[numberTickets - 1] = null;
-        charge+=admin.getFlights()[numberFlight].getPrice();
+        charge += admin.getFlights()[numberFlight].getPrice();
         numberTickets -= 1;
         System.out.println("successful ...");
     }
