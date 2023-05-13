@@ -82,4 +82,18 @@ public class Flight {
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "flightId='" + flightId + '\'' +
+                ", origin='" + origin + '\'' +
+                ", destination='" + destination + '\'' +
+                ", dateFlight=" + dateFlight +
+                ", timeFlight=" + timeFlight +
+                ", price=" + price +
+                ", seats=" + seats +
+                ", capacity=" + capacity +
+                '}';
+    }
 }

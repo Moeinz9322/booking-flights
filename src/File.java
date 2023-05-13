@@ -9,12 +9,12 @@ public abstract class File {
         this.file = file;
     }
 
-    public void write() {
-
-    }
-    public void read(){
-
-    }
+//    public void write() {
+//
+//    }
+//    public void read(){
+//
+//    }
     public String fixSizeToWrite(String str){
         while (str.length()<FIX_SIZE){
             str+=" ";
@@ -31,6 +31,10 @@ public abstract class File {
     }
     public DateFlight readDate() throws IOException {
         String date=new String(readFixString());
-        return new DateFlight(date.substring(0,4),date.substring(4,6),date.substring(6,8));
+        return new DateFlight(date.substring(0,4),date.substring(5,7),date.substring(8,10));
+    }
+    public TimeFlight readTime() throws IOException {
+        String date=new String(readFixString());
+        return new TimeFlight(date.substring(0,2),date.substring(3,5));
     }
 }

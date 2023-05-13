@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 /**
  * run program
  *
@@ -19,6 +23,18 @@ public class Main {
                 , new TimeFlight("22", "30"), 1100000, 12, 12);
         Admin admin = new Admin("Admin", "Admin", flights);
         Users users = new Users(new User[numberOfUser], admin);
+        try {
+            RandomAccessFile file = new RandomAccessFile("file.dat","rw");
+            FileFlight fileFlight = new FileFlight(file);
+            fileFlight.write(flights[0]);
+            file.seek(0);
+            System.out.println(fileFlight.read().toString());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         Menu.startMenu(users);
     }
 }

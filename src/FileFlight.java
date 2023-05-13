@@ -20,12 +20,9 @@ public class FileFlight extends File {
     }
 
 
-    public void read(Flight flight) throws IOException {
-        flight.setFlightId(readFixString());
-        flight.setOrigin(readFixString());
-        flight.setDestination(readFixString());
-        flight.setDateFlight(readDate());
-
+    public Flight read() throws IOException {
+        return new Flight(readFixString(),readFixString(),readFixString(),readDate()
+                ,readTime(),file.readInt(),file.readInt(),file.readInt());
     }
 
 }
