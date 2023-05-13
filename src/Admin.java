@@ -47,8 +47,8 @@ public class Admin {
         try {
             RandomAccessFile file = new RandomAccessFile("file.dat", "rw");
             FileFlight fileFlight = new FileFlight(file);
+            file.seek(file.length());
             fileFlight.write(flight);
-            file.seek(file.length() + 1);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -103,7 +103,7 @@ public class Admin {
     public void flightSchedules() throws IOException {
         Menu.printFlightsMenu();
         Flight[] flights1 = new Flight[1000];
-        RandomAccessFile file = new RandomAccessFile("file.dat", "rw");
+        RandomAccessFile file = new RandomAccessFile("file.dat", "r");
         FileFlight fileFlight = new FileFlight(file);
         file.seek(0);
         for (int i = 0; i < file.length() / 162; i++) {
