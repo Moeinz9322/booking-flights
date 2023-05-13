@@ -9,20 +9,28 @@ public abstract class File {
         this.file = file;
     }
 
-    public abstract void write(Flight flight);
-    public abstract void read();
-    public String fixSize(String str){
+    public void write() {
+
+    }
+    public void read(){
+
+    }
+    public String fixSizeToWrite(String str){
         while (str.length()<FIX_SIZE){
             str+=" ";
         }
         return str.substring(0,FIX_SIZE);
     }
 
-    private String readFixString() throws IOException {
+    public String readFixString() throws IOException {
         String tmp = "";
         for (int i = 0; i < FIX_SIZE; i++) {
             tmp += file.readChar();
         }
         return tmp.trim();
+    }
+    public DateFlight readDate() throws IOException {
+        String date=new String(readFixString());
+        return new DateFlight(date.substring(0,4),date.substring(4,6),date.substring(6,8));
     }
 }
