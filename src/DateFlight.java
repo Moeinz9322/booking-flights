@@ -35,6 +35,9 @@ public class DateFlight {
 
     @Override
     public String toString() {
+        for (int i = 0; year.length() < 4; i++) {
+            year = "0" + year;
+        }
         if (month.length() == 1)
             month = "0" + month;
         if (day.length() == 1)

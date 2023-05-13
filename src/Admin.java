@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class Admin {
@@ -41,13 +44,15 @@ public class Admin {
      * @param flight
      */
     public void addFlight(Flight flight) {
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] == null) {
-                flights[i] = new Flight(flight.getFlightId(), flight.getOrigin()
-                        , flight.getDestination(), flight.getDateFlight(), flight.getTimeFlight(), flight.getPrice()
-                        , flight.getSeats(), flight.getSeats());
-                break;
-            }
+        try {
+            RandomAccessFile file = new RandomAccessFile("file.dat", "rw");
+            FileFlight fileFlight = new FileFlight(file);
+            fileFlight.write(flight);
+            file.seek(file.length() + 1);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -91,16 +96,20 @@ public class Admin {
 
     public void printFlightForSearch(ArrayList<Integer> arrayNumberFlight) {
         Menu.printFlightsMenu();
-        Menu.printFlights(arrayNumberFlight, flights);
+
+        Menu.printFlights(flights);
     }
 
-    public void flightSchedules() {
+    public void flightSchedules() throws IOException {
         Menu.printFlightsMenu();
-        ArrayList arrayNumberFlight = new ArrayList();
-        for (int i = 0; i < 1000; i++) {
-            arrayNumberFlight.add(i);
+        Flight[] flights1 = new Flight[1000];
+        RandomAccessFile file = new RandomAccessFile("file.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
+        file.seek(0);
+        for (int i = 0; i < file.length() / 162; i++) {
+            flights1[i] = fileFlight.read();
         }
-        Menu.printFlights(arrayNumberFlight, flights);
+        Menu.printFlights(flights1);
     }
 
     /**

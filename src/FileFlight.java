@@ -21,8 +21,8 @@ public class FileFlight extends File {
 
 
     public Flight read() throws IOException {
-        return new Flight(readFixString(),readFixString(),readFixString(),readDate()
-                ,readTime(),file.readInt(),file.readInt(),file.readInt());
+        return new Flight(readFixString(), readFixString(), readFixString(), readDate()
+                , readTime(), file.readInt(), file.readInt(), file.readInt());
     }
 
 }

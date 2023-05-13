@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Menu {
@@ -110,7 +111,11 @@ public class Menu {
                     removeFlight(admin);
                     break;
                 case "4", "FLIGHT SCHEDULES":
-                    admin.flightSchedules();
+                    try {
+                        admin.flightSchedules();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     pauseInputEnter();
                     break;
                 case "0", "SIGN OUT":
@@ -348,20 +353,20 @@ public class Menu {
         return arraySharingArrays;
     }
 
-    public static void printFlights(ArrayList<Integer> arrayNumberFlight, Flight[] flights) {
+    public static void printFlights(Flight[] flights) {
         clearScreen();
-        for (int i = 0; i < arrayNumberFlight.size(); i++) {
-            if (flights[arrayNumberFlight.get(i)] != null) {
+        for (Flight flight : flights) {
+            if (flight != null) {
                 System.out.printf("|%-12s|%s%-11s|%s%-11s|%-12s|%-12s|%,-12d|%-12s|\n%-12s\n"
-                        , flights[arrayNumberFlight.get(i)].getFlightId()
-                        , flights[arrayNumberFlight.get(i)].getOrigin().substring(0, 1).toUpperCase()
-                        , flights[arrayNumberFlight.get(i)].getOrigin().substring(1)
-                        , flights[arrayNumberFlight.get(i)].getDestination().substring(0, 1).toUpperCase()
-                        , flights[arrayNumberFlight.get(i)].getDestination().substring(1)
-                        , flights[arrayNumberFlight.get(i)].getDateFlight().toString()
-                        , flights[arrayNumberFlight.get(i)].getTimeFlight().toString()
-                        , flights[arrayNumberFlight.get(i)].getPrice()
-                        , flights[arrayNumberFlight.get(i)].getSeats()
+                        , flight.getFlightId()
+                        , flight.getOrigin().substring(0, 1).toUpperCase()
+                        , flight.getOrigin().substring(1)
+                        , flight.getDestination().substring(0, 1).toUpperCase()
+                        , flight.getDestination().substring(1)
+                        , flight.getDateFlight().toString()
+                        , flight.getTimeFlight().toString()
+                        , flight.getPrice()
+                        , flight.getSeats()
                         , "............................................................................................"
                 );
             }
