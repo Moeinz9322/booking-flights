@@ -42,7 +42,7 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* username : "
         );
-        String userId = Input.inputInSignIn(users);
+        String userId = Input.inputInSignIn();
         switch (userId) {
             case "admin":
                 adminMenu(users.admin);
@@ -61,8 +61,10 @@ public class Menu {
     /**
      * sign in for user
      */
-    private void signUp(Users users) {
+    private void signUp(Users users) throws IOException {
         clearScreen();
+        RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
+        FileUsers fileUsers = new FileUsers(file);
         Input input = new Input();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -70,16 +72,11 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* username : "
         );
-        String username = input.inputInSignUp(users);
-        for (int i = 0; i < users.customers.length; i++) {
-            if (users.customers[i] == null) {
-                Ticket[] tickets = new Ticket[100];
-                users.customers[i] = new User(username, "0", 0, tickets, 0, 1000);
-                System.out.print("* password : ");
-                users.customers[i].setPassword(Input.inputString());
-                break;
-            }
-        }
+        String username = input.inputInSignUp();
+        System.out.print("* password : ");
+        file.seek(file.length());
+        fileUsers.writeString(username);
+        fileUsers.writeString(Input.inputString());
         System.out.println("successful ...");
         pauseInputEnter();
     }
@@ -130,7 +127,7 @@ public class Menu {
         clearScreen();
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
-        Admin admin=new Admin(null,null,null);
+        Admin admin = new Admin(null, null, null);
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   remove                      "
@@ -143,7 +140,7 @@ public class Menu {
             pauseInputEnter();
             return;
         }
-        file.seek(numberFlight*162+154);
+        file.seek(numberFlight * 162 + 154);
         if (file.readInt() != file.readInt()) {
             System.out.println("You can't remove this flight because it is reserved by the user :(");
             pauseInputEnter();
@@ -158,7 +155,7 @@ public class Menu {
         clearScreen();
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
-        Admin admin = new Admin(null,null,null);
+        Admin admin = new Admin(null, null, null);
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   update                      "
@@ -171,7 +168,7 @@ public class Menu {
             pauseInputEnter();
             return;
         }
-        file.seek(numberFlight*162+154);
+        file.seek(numberFlight * 162 + 154);
         if (file.readInt() != file.readInt()) {
             System.out.println("You can't update this flight because it is reserved by the user :(");
             pauseInputEnter();
@@ -204,7 +201,7 @@ public class Menu {
 
     private static void addFlightMenu() {
         clearScreen();
-        Admin admin=new Admin(null,null,null);
+        Admin admin = new Admin(null, null, null);
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                     Add                       "

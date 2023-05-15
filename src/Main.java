@@ -25,8 +25,16 @@ public class Main {
         Users users = new Users(new User[numberOfUser], admin);
         try {
             RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
-            file.setLength(0);
             FileFlight fileFlight = new FileFlight(file);
+            RandomAccessFile file2 = new RandomAccessFile("fileUsers.dat", "rw");
+            FileUsers fileUsers = new FileUsers(file2);
+            file2.setLength(0);
+            file2.seek(0);
+            fileUsers.writeString("Admin");
+            fileUsers.writeString("Admin");
+            file2.seek(0);
+            System.out.println(fileUsers.readFixString());
+            file.setLength(0);
             fileFlight.write(flights[0]);
             file.seek(0);
             System.out.println(fileFlight.read().toString());

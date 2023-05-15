@@ -57,34 +57,34 @@ public class Admin {
     }
 
     public void updateFlight(Flight flight, int numberFlight) throws IOException {
-        RandomAccessFile file = new RandomAccessFile("fileFlights.dat","rw");
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
         if (!flight.getFlightId().equals("")) {
-            file.seek(numberFlight*162);
+            file.seek(numberFlight * 162);
             fileFlight.writeString(flight.getFlightId());
         }
         if (!flight.getOrigin().equals("")) {
-            file.seek(numberFlight*162+30);
+            file.seek(numberFlight * 162 + 30);
             fileFlight.writeString(flight.getOrigin());
         }
         if (!flight.getDestination().equals("")) {
-            file.seek(numberFlight*162+60);
+            file.seek(numberFlight * 162 + 60);
             fileFlight.writeString(flight.getDestination());
         }
         if (!flight.getDateFlight().getYear().equals("-1")) {
-            file.seek(numberFlight*162+90);
+            file.seek(numberFlight * 162 + 90);
             fileFlight.writeString(flight.getDateFlight().toString());
         }
         if (!flight.getTimeFlight().getHours().equals("-1")) {
-            file.seek(numberFlight*162+120);
+            file.seek(numberFlight * 162 + 120);
             fileFlight.writeString(flight.getTimeFlight().toString());
         }
-        if (!String.valueOf(flight.getPrice()).equals("-1")){
-            file.seek(numberFlight*162+150);
+        if (!String.valueOf(flight.getPrice()).equals("-1")) {
+            file.seek(numberFlight * 162 + 150);
             file.writeInt(flight.getPrice());
         }
         if (!String.valueOf(flight.getSeats()).equals("-1")) {
-            file.seek(numberFlight*162+154);
+            file.seek(numberFlight * 162 + 154);
             file.writeInt(flight.getSeats());
             file.writeInt(flight.getSeats());
         }
@@ -94,13 +94,13 @@ public class Admin {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
         Flight flight;
-        for (int i = numberFlight; i < file.length()/162-1; i++) {
-            file.seek((i+1)*162);
-            flight=fileFlight.read();
-            file.seek(i*162);
+        for (int i = numberFlight; i < file.length() / 162 - 1; i++) {
+            file.seek((i + 1) * 162);
+            flight = fileFlight.read();
+            file.seek(i * 162);
             fileFlight.write(flight);
         }
-        file.setLength(file.length()-162);
+        file.setLength(file.length() - 162);
     }
 
     public void printFlightForSearch(ArrayList<Integer> arrayNumberFlight) {
@@ -130,8 +130,8 @@ public class Admin {
     public static int findFlightId(String flightId) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
-        for (int i = 0; i < file.length()/162; i++) {
-            file.seek(i*162);
+        for (int i = 0; i < file.length() / 162; i++) {
+            file.seek(i * 162);
             if (fileFlight.readFixString().equals(flightId)) {
                 return i;
             }

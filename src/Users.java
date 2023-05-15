@@ -1,3 +1,5 @@
+import java.io.RandomAccessFile;
+
 public class Users {
     User[] customers;
     Admin admin;
@@ -23,18 +25,18 @@ public class Users {
         this.admin = admin;
     }
 
-    public String findUsername(String username) {
-        if (username.equals(admin.getUsername())) {
-            return "admin";
-        } else {
-            for (int i = 0; i < customers.length; i++) {
-                if (customers[i] != null && username.equals(customers[i].getUsername())) {
-                    return String.valueOf(i);
-                }
-            }
-        }
-        return "-1";
-    }
+//    public String findUsername(String username) {
+//        if (username.equals(admin.getUsername())) {
+//            return "admin";
+//        } else {
+//            for (int i = 0; i < customers.length; i++) {
+//                if (customers[i] != null && username.equals(customers[i].getUsername())) {
+//                    return String.valueOf(i);
+//                }
+//            }
+//        }
+//        return "-1";
+//    }
 
     public void bookingTicket(int userId, int numberFlight) {
         admin.changeSeats(numberFlight, admin.getFlights()[numberFlight].getSeats() - 1);

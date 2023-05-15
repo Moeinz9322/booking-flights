@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 //Check input if it was true return else print Check message
@@ -74,32 +76,38 @@ public class Input {
         return input;
     }
 
-    public static String inputInSignIn(Users users) {
+    public static String inputInSignIn() throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
+        FileUsers fileUsers = new FileUsers(file);
         String username = inputString();
         System.out.print("* Password : ");
         String password = inputString();
-        String userId = users.findUsername(username);
+        String userId = fileUsers.findUsername(username);
         switch (userId) {
             case "admin" -> {
-                if (password.equals(users.admin.getPassword()))
+                file.seek(fileUsers.FIX_SIZE * 2);
+                if (password.equals(fileUsers.readFixString()))
                     return "admin";
             }
             case "-1" -> {
                 return "-1";
             }
             default -> {
-                if (password.equals(users.customers[Integer.parseInt(userId)].getPassword()))
+                file.seek(Integer.valueOf(userId) * fileUsers.FIX_SIZE * 4 + fileUsers.FIX_SIZE * 2);
+                if (password.equals(fileUsers.readFixString()))
                     return userId;
             }
         }
         return "-1";
     }
 
-    public String inputInSignUp(Users users) {
+    public String inputInSignUp() throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
+        FileUsers fileUsers = new FileUsers(file);
         String username;
         while (true) {
             username = inputString();
-            if (users.findUsername(username).equals("-1")) {
+            if (fileUsers.findUsername(username).equals("-1")) {
                 break;
             } else {
                 System.out.println("please change your username");
