@@ -24,18 +24,18 @@ public class Main {
         Admin admin = new Admin("Admin", "Admin", flights);
         Users users = new Users(new User[numberOfUser], admin);
         try {
-            RandomAccessFile file = new RandomAccessFile("file.dat", "rw");
+            RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
             file.setLength(0);
             FileFlight fileFlight = new FileFlight(file);
             fileFlight.write(flights[0]);
             file.seek(0);
             System.out.println(fileFlight.read().toString());
+            Menu.startMenu(users);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        Menu.startMenu(users);
     }
 }

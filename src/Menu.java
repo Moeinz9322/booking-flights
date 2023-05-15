@@ -1,9 +1,10 @@
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class Menu {
 
-    public static void startMenu(Users users) {
+    public static void startMenu(Users users) throws IOException {
         Menu menu = new Menu();
         String input;
         while (true) {
@@ -33,7 +34,7 @@ public class Menu {
         );
     }
 
-    private void signIn(Users users) {
+    private void signIn(Users users) throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -83,7 +84,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void adminMenu(Admin admin) {
+    private static void adminMenu(Admin admin) throws IOException {
         Input input = new Input();
         boolean flag = true;
         while (flag) {
@@ -102,13 +103,13 @@ public class Menu {
 
             switch (input.inputAdminMenu()) {
                 case "1", "ADD":
-                    addFlightMenu(admin);
+                    addFlightMenu();
                     break;
                 case "2", "UPDATE":
-                    updateFlightMenu(admin);
+                    updateFlightMenu();
                     break;
                 case "3", "REMOVE":
-                    removeFlight(admin);
+                    removeFlight();
                     break;
                 case "4", "FLIGHT SCHEDULES":
                     try {
@@ -125,21 +126,25 @@ public class Menu {
         }
     }
 
-    private static void removeFlight(Admin admin) {
+    private static void removeFlight() throws IOException {
         clearScreen();
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
+        Admin admin=new Admin(null,null,null);
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   remove                      "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* FlightId : "
         );
-        int numberFlight = admin.findFlightId(Input.inputString());
+        int numberFlight = Admin.findFlightId(Input.inputString());
         if (numberFlight == -1) {
             System.out.println("Please check flight id :(");
             pauseInputEnter();
             return;
         }
-        if (admin.getFlights()[numberFlight].getSeats() != admin.getFlights()[numberFlight].getCapacity()) {
+        file.seek(numberFlight*162+154);
+        if (file.readInt() != file.readInt()) {
             System.out.println("You can't remove this flight because it is reserved by the user :(");
             pauseInputEnter();
             return;
@@ -149,21 +154,25 @@ public class Menu {
         Input.inputString();
     }
 
-    private static void updateFlightMenu(Admin admin) {
+    private static void updateFlightMenu() throws IOException {
         clearScreen();
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
+        Admin admin = new Admin(null,null,null);
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   update                      "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* Flight Id : "
         );
-        int numberFlight = admin.findFlightId(Input.inputString());
+        int numberFlight = Admin.findFlightId(Input.inputString());
         if (numberFlight == -1) {
             System.out.println("Please check flight id :(");
             pauseInputEnter();
             return;
         }
-        if (admin.getFlights()[numberFlight].getSeats() != admin.getFlights()[numberFlight].getCapacity()) {
+        file.seek(numberFlight*162+154);
+        if (file.readInt() != file.readInt()) {
             System.out.println("You can't update this flight because it is reserved by the user :(");
             pauseInputEnter();
             return;
@@ -193,8 +202,9 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void addFlightMenu(Admin admin) {
+    private static void addFlightMenu() {
         clearScreen();
+        Admin admin=new Admin(null,null,null);
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                     Add                       "
@@ -204,7 +214,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void userMenu(Users users, int userId) {
+    private static void userMenu(Users users, int userId) throws IOException {
         Menu menu = new Menu();
         boolean flag = true;
         while (flag) {
@@ -260,7 +270,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void searchFlight(Admin admin) {
+    private static void searchFlight(Admin admin) throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -386,7 +396,7 @@ public class Menu {
         );
     }
 
-    private void bookingTicket(Users users, int userId) {
+    private void bookingTicket(Users users, int userId) throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -416,7 +426,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private void ticketCancellation(Users users, int userId) {
+    private void ticketCancellation(Users users, int userId) throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"

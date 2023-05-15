@@ -45,7 +45,7 @@ public class Admin {
      */
     public void addFlight(Flight flight) {
         try {
-            RandomAccessFile file = new RandomAccessFile("file.dat", "rw");
+            RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
             FileFlight fileFlight = new FileFlight(file);
             file.seek(file.length());
             fileFlight.write(flight);
@@ -56,42 +56,51 @@ public class Admin {
         }
     }
 
-    public void updateFlight(Flight flight, int numberFlight) {
-        if (!flight.getFlightId().equals(""))
-            flights[numberFlight].setFlightId(flight.getFlightId());
-        if (!flight.getOrigin().equals(""))
-            flights[numberFlight].setOrigin(flight.getOrigin());
-        if (!flight.getDestination().equals(""))
-            flights[numberFlight].setDestination(flight.getDestination());
-        DateFlight dateFlight = new DateFlight(flights[numberFlight].getDateFlight().getYear(), flights[numberFlight].getDateFlight().getMonth(), flights[numberFlight].getDateFlight().getDay());
+    public void updateFlight(Flight flight, int numberFlight) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat","rw");
+        FileFlight fileFlight = new FileFlight(file);
+        if (!flight.getFlightId().equals("")) {
+            file.seek(numberFlight*162);
+            fileFlight.writeString(flight.getFlightId());
+        }
+        if (!flight.getOrigin().equals("")) {
+            file.seek(numberFlight*162+30);
+            fileFlight.writeString(flight.getOrigin());
+        }
+        if (!flight.getDestination().equals("")) {
+            file.seek(numberFlight*162+60);
+            fileFlight.writeString(flight.getDestination());
+        }
         if (!flight.getDateFlight().getYear().equals("-1")) {
-            dateFlight.setYear(flight.getDateFlight().getYear());
+            file.seek(numberFlight*162+90);
+            fileFlight.writeString(flight.getDateFlight().toString());
         }
-        if (!flight.getDateFlight().getMonth().equals("-1")) {
-            dateFlight.setMonth(flight.getDateFlight().getMonth());
-        }
-        if (!flight.getDateFlight().getDay().equals("-1")) {
-            dateFlight.setDay(flight.getDateFlight().getDay());
-        }
-        flights[numberFlight].setDateFlight(dateFlight);
-        TimeFlight timeFlight = new TimeFlight(flights[numberFlight].getTimeFlight().getHours(), flights[numberFlight].getTimeFlight().getMinutes());
         if (!flight.getTimeFlight().getHours().equals("-1")) {
-            timeFlight.setHours(flight.getTimeFlight().getHours());
+            file.seek(numberFlight*162+120);
+            fileFlight.writeString(flight.getTimeFlight().toString());
         }
-        if (!flight.getTimeFlight().getMinutes().equals("-1")) {
-            timeFlight.setMinutes(flight.getTimeFlight().getMinutes());
+        if (!String.valueOf(flight.getPrice()).equals("-1")){
+            file.seek(numberFlight*162+150);
+            file.writeInt(flight.getPrice());
         }
-        flights[numberFlight].setTimeFlight(timeFlight);
-        if (!String.valueOf(flight.getPrice()).equals("-1"))
-            flights[numberFlight].setPrice(flight.getPrice());
         if (!String.valueOf(flight.getSeats()).equals("-1")) {
-            flights[numberFlight].setSeats(flight.getSeats());
-            flights[numberFlight].setCapacity(flight.getSeats());
+            file.seek(numberFlight*162+154);
+            file.writeInt(flight.getSeats());
+            file.writeInt(flight.getSeats());
         }
     }
 
-    public void removeFlight(int numberFlight) {
-        flights[numberFlight] = null;
+    public void removeFlight(int numberFlight) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
+        Flight flight;
+        for (int i = numberFlight; i < file.length()/162-1; i++) {
+            file.seek((i+1)*162);
+            flight=fileFlight.read();
+            file.seek(i*162);
+            fileFlight.write(flight);
+        }
+        file.setLength(file.length()-162);
     }
 
     public void printFlightForSearch(ArrayList<Integer> arrayNumberFlight) {
@@ -103,7 +112,7 @@ public class Admin {
     public void flightSchedules() throws IOException {
         Menu.printFlightsMenu();
         Flight[] flights1 = new Flight[1000];
-        RandomAccessFile file = new RandomAccessFile("file.dat", "r");
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "r");
         FileFlight fileFlight = new FileFlight(file);
         file.seek(0);
         for (int i = 0; i < file.length() / 162; i++) {
@@ -118,9 +127,12 @@ public class Admin {
      * @param flightId
      * @return
      */
-    public int findFlightId(String flightId) {
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && flights[i].getFlightId().equals(flightId)) {
+    public static int findFlightId(String flightId) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
+        for (int i = 0; i < file.length()/162; i++) {
+            file.seek(i*162);
+            if (fileFlight.readFixString().equals(flightId)) {
                 return i;
             }
         }

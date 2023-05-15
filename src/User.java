@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Random;
 
 public class User {
@@ -102,7 +103,7 @@ public class User {
         return -1;
     }
 
-    public void ticketCancellation(Admin admin, int numberTicket) {
+    public void ticketCancellation(Admin admin, int numberTicket) throws IOException {
         int numberFlight;
         numberFlight = admin.findFlightId(tickets[numberTicket].getFlightId());
         admin.changeSeats(numberFlight, admin.getFlights()[numberFlight].getSeats() + 1);
