@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class FileUsers extends File {
+    public static final int RECORD_LENGTH = 64;
     public FileUsers(RandomAccessFile file) {
         super(file);
     }
@@ -11,8 +12,8 @@ public class FileUsers extends File {
         if (username.equals(readFixString())) {
             return "admin";
         } else {
-            for (int i = 0; i < file.length() / 60; i++) {
-                file.seek(i * 60);
+            for (int i = 0; i < file.length() / RECORD_LENGTH; i++) {
+                file.seek(i * RECORD_LENGTH);
                 if (readFixString().equals(username)) {
                     return String.valueOf(i);
                 }

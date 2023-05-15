@@ -32,6 +32,7 @@ public class Main {
             file2.seek(0);
             fileUsers.writeString("Admin");
             fileUsers.writeString("Admin");
+            file2.writeInt(0);
             file2.seek(0);
             System.out.println(fileUsers.readFixString());
             file.setLength(0);

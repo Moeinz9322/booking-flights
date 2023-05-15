@@ -17,7 +17,7 @@ public class Menu {
                     menu.signIn(users);
                     break;
                 case "2", "SIGN UP":
-                    menu.signUp(users);
+                    menu.signUp();
                     break;
             }
         }
@@ -61,7 +61,7 @@ public class Menu {
     /**
      * sign in for user
      */
-    private void signUp(Users users) throws IOException {
+    private void signUp() throws IOException {
         clearScreen();
         RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
         FileUsers fileUsers = new FileUsers(file);
@@ -77,6 +77,7 @@ public class Menu {
         file.seek(file.length());
         fileUsers.writeString(username);
         fileUsers.writeString(Input.inputString());
+        file.writeInt(0);
         System.out.println("successful ...");
         pauseInputEnter();
     }
@@ -257,15 +258,12 @@ public class Menu {
     }
 
     private static void changePassword(Users users, int userId) throws IOException {
-        RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
-        FileUsers fileUsers = new FileUsers(file);
         clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "               change password                 "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
         );
-        file.seek(userId * fileUsers.FIX_SIZE * 4 + fileUsers.FIX_SIZE + 2);
         Input input = new Input();
         input.inputForChangePassword(userId);
         pauseInputEnter();
