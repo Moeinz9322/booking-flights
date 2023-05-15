@@ -256,14 +256,18 @@ public class Menu {
         }
     }
 
-    private static void changePassword(Users users, int userId) {
+    private static void changePassword(Users users, int userId) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
+        FileUsers fileUsers = new FileUsers(file);
         clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "               change password                 "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
         );
-        users.customers[userId].setPassword(Input.inputForChangePassword(users, userId));
+        file.seek(userId * fileUsers.FIX_SIZE * 4 + fileUsers.FIX_SIZE + 2);
+        Input input = new Input();
+        input.inputForChangePassword(userId);
         pauseInputEnter();
     }
 

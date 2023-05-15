@@ -260,11 +260,14 @@ public class Input {
         return input;
     }
 
-    public static String inputForChangePassword(Users users, int userId) {
+    public void inputForChangePassword(int userId) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
+        FileUsers fileUsers = new FileUsers(file);
+        file.seek(userId * 4 * fileUsers.FIX_SIZE);
         System.out.print("* Current Password : ");
-        if (!inputString().equals(users.customers[userId].getPassword())) {
+        if (!inputString().equals(fileUsers.readFixString())) {
             System.out.println("Please check your password:(");
-            return users.customers[userId].getPassword();
+            return;
         }
         System.out.print("* New Password : ");
         String newPassword = inputString();
@@ -273,8 +276,9 @@ public class Input {
         while (true) {
             confirmPassword = inputString();
             if (newPassword.equals(confirmPassword)) {
+                fileUsers.writeString(newPassword);
                 System.out.println("successful ...");
-                return newPassword;
+                return;
             } else {
                 System.out.println("The confirm password is false please check it :(");
             }
