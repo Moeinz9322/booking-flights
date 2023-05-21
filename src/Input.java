@@ -263,7 +263,7 @@ public class Input {
     public void inputForChangePassword(int userId) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
         FileUsers fileUsers = new FileUsers(file);
-        file.seek(userId * fileUsers.RECORD_LENGTH);
+        file.seek(userId * fileUsers.RECORD_LENGTH + fileUsers.FIX_SIZE * 2);
         System.out.print("* Current Password : ");
         if (!inputString().equals(fileUsers.readFixString())) {
             System.out.println("Please check your password:(");

@@ -233,7 +233,7 @@ public class Menu {
 
             switch (Input.inputForUserMenu()) {
                 case "1":
-                    changePassword(users, userId);
+                    changePassword(userId);
                     break;
                 case "2":
                     searchFlight(users.admin);
@@ -257,7 +257,7 @@ public class Menu {
         }
     }
 
-    private static void changePassword(Users users, int userId) throws IOException {
+    private static void changePassword(int userId) throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
