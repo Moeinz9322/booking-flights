@@ -248,7 +248,7 @@ public class Menu {
                     menu.bookedTickets(users, userId);
                     break;
                 case "6":
-                    menu.addCharge(users, userId);
+                    menu.addCharge(userId);
                     break;
                 case "0":
                     flag = false;
@@ -277,7 +277,7 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "Press enter if you want to skip the field , otherwise type the desired word in front of it"
         );
-        Admin admin=new Admin(null,null,null);
+        Admin admin = new Admin(null, null, null);
         ArrayList<Integer> arraySimilarFlights = new ArrayList<>();
         ArrayList<Integer> arrayFlights;
         Flight flight = new Flight(Input.inputFlightId(), Input.inputOrigin(), Input.inputDestination(), null, null, 0, 0, 0);
@@ -472,18 +472,22 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private void addCharge(Users users, int userId) {
+    private void addCharge(int userId) throws IOException {
         clearScreen();
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileUsers fileUsers = new FileUsers(file);
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   Add charge                  "
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* price : "
         );
+        file.seek(userId*64+60);
+        int charge = file.readInt() + Integer.parseInt(Input.inputIntegerNotNullToString());
 
-        users.customers[userId].setCharge(users.customers[userId].getCharge() + Integer.parseInt(Input.inputIntegerNotNullToString()));
-
-        System.out.println("charge : " + users.customers[userId].getCharge());
+        file.seek(userId*64+60);
+        file.writeInt(charge);
+        System.out.println("charge : " + charge);
         pauseInputEnter();
     }
 
