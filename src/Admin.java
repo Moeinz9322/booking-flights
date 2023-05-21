@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Admin {
     private String username;
@@ -103,10 +104,17 @@ public class Admin {
         file.setLength(file.length() - 162);
     }
 
-    public void printFlightForSearch(ArrayList<Integer> arrayNumberFlight) {
+    public void printFlightForSearch(ArrayList<Integer> arrayNumberFlight) throws IOException {
         Menu.printFlightsMenu();
-
-        Menu.printFlights(flights);
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "r");
+        FileFlight fileFlight = new FileFlight(file);
+        int i = 0;
+        Flight[] flight = new Flight[Main.NUMBER_OF_FLIGHT];
+        for (Integer integer : arrayNumberFlight) {
+            file.seek(integer * 162);
+            flight[i++] = fileFlight.read();
+        }
+        Menu.printFlights(flight);
     }
 
     public void flightSchedules() throws IOException {
@@ -145,10 +153,13 @@ public class Admin {
      * @param origin
      * @return numberOfFlights
      */
-    public ArrayList<Integer> findOriginSimilar(String origin) {
+    public ArrayList<Integer> findOriginSimilar(String origin) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
         ArrayList<Integer> originSimilar = new ArrayList<>();
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && flights[i].getOrigin().equals(origin)) {
+        for (int i = 0; i < file.length() / 162; i++) {
+            file.seek(i * 162+30);
+            if (fileFlight.readFixString().equals(origin)) {
                 originSimilar.add(i);
             }
         }
@@ -161,13 +172,17 @@ public class Admin {
      * @param destination
      * @return numberOfFlights
      */
-    public ArrayList<Integer> findDestinationSimilar(String destination) {
+    public ArrayList<Integer> findDestinationSimilar(String destination) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
         ArrayList<Integer> destinationSimilar = new ArrayList<>();
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && flights[i].getDestination().equals(destination)) {
+        for (int i = 0; i < file.length() / 162; i++) {
+            file.seek(i * 162+60);
+            if (fileFlight.readFixString().equals(destination)) {
                 destinationSimilar.add(i);
             }
         }
+        file.close();
         return destinationSimilar;
     }
 
@@ -178,17 +193,21 @@ public class Admin {
      * @param until
      * @return numberOfFlights
      */
-    public ArrayList<Integer> findDateSimilar(DateFlight since, DateFlight until) {
+    public ArrayList<Integer> findDateSimilar(DateFlight since, DateFlight until) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
+        int dateAmount;
+        DateFlight date;
         ArrayList<Integer> dateSimilar = new ArrayList<>();
         double sinceDate = 10000 * Integer.parseInt(since.getYear()) + 100 * Integer.parseInt(since.getMonth()) + Integer.parseInt(since.getDay());
         double upToDate = 10000 * Integer.parseInt(until.getYear()) + 100 * Integer.parseInt(until.getMonth()) + Integer.parseInt(until.getDay());
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && sinceDate <= 10000 * Integer.parseInt(flights[i].getDateFlight().getYear()) +
-                    Integer.parseInt(flights[i].getDateFlight().getMonth()) * 100 +
-                    Integer.parseInt(flights[i].getDateFlight().getDay()) &&
-                    10000 * Integer.parseInt(flights[i].getDateFlight().getYear()) +
-                            Integer.parseInt(flights[i].getDateFlight().getMonth()) * 100 +
-                            Integer.parseInt(flights[i].getDateFlight().getDay()) <= upToDate) {
+        for (int i = 0; i < file.length() / 162; i++) {
+            file.seek(i * 162+90);
+            date = fileFlight.readDate();
+            dateAmount = 10000 * Integer.parseInt(date.getYear()) +
+                    Integer.parseInt(date.getMonth()) * 100 +
+                    Integer.parseInt(date.getDay());
+            if (sinceDate <= dateAmount && dateAmount <= upToDate) {
                 dateSimilar.add(i);
             }
         }
@@ -202,13 +221,19 @@ public class Admin {
      * @param until
      * @return numberOfFlights
      */
-    public ArrayList<Integer> findTimeSimilar(TimeFlight since, TimeFlight until) {
+    public ArrayList<Integer> findTimeSimilar(TimeFlight since, TimeFlight until) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
+        int timeAmount;
+        TimeFlight time;
         ArrayList<Integer> timeSimilar = new ArrayList<>();
         double sinceTime = 100 * Integer.parseInt(since.getHours()) + Integer.parseInt(since.getMinutes());
         double upToTime = 100 * Integer.parseInt(until.getHours()) + Integer.parseInt(until.getMinutes());
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && sinceTime <= 100 * Integer.parseInt(flights[i].getTimeFlight().getHours()) + Integer.parseInt(flights[i].getTimeFlight().getMinutes())
-                    && 100 * Integer.parseInt(flights[i].getTimeFlight().getHours()) + Integer.parseInt(flights[i].getTimeFlight().getMinutes()) <= upToTime) {
+        for (int i = 0; i < file.length(); i++) {
+            file.seek(i * 162+120);
+            time = fileFlight.readTime();
+            timeAmount = 100 * Integer.parseInt(time.getHours()) + Integer.parseInt(time.getMinutes());
+            if (sinceTime <= timeAmount && timeAmount <= upToTime) {
                 timeSimilar.add(i);
             }
         }
@@ -222,10 +247,13 @@ public class Admin {
      * @param upToPrice
      * @return numberOfFlights
      */
-    public ArrayList<Integer> findPriceSimilar(int fromPrice, int upToPrice) {
+    public ArrayList<Integer> findPriceSimilar(int fromPrice, int upToPrice) throws IOException {
+        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
+        FileFlight fileFlight = new FileFlight(file);
         ArrayList<Integer> priceSimilar = new ArrayList<>();
-        for (int i = 0; i < flights.length; i++) {
-            if (flights[i] != null && fromPrice <= flights[i].getPrice() && flights[i].getPrice() <= upToPrice) {
+        for (int i = 0; i < file.length(); i++) {
+            file.seek(i*162+150);
+            if (file.readInt() <= upToPrice) {
                 priceSimilar.add(i);
             }
         }

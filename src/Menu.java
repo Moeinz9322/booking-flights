@@ -236,7 +236,7 @@ public class Menu {
                     changePassword(userId);
                     break;
                 case "2":
-                    searchFlight(users.admin);
+                    searchFlight();
                     break;
                 case "3":
                     menu.bookingTicket(users, userId);
@@ -269,7 +269,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void searchFlight(Admin admin) throws IOException {
+    private static void searchFlight() throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -277,8 +277,9 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "Press enter if you want to skip the field , otherwise type the desired word in front of it"
         );
+        Admin admin=new Admin(null,null,null);
         ArrayList<Integer> arraySimilarFlights = new ArrayList<>();
-        ArrayList<Integer> arrayFlights = new ArrayList<>();
+        ArrayList<Integer> arrayFlights;
         Flight flight = new Flight(Input.inputFlightId(), Input.inputOrigin(), Input.inputDestination(), null, null, 0, 0, 0);
         System.out.println("(Sine)");
         flight.setDateFlight(Input.inputDateForSearch());
@@ -350,7 +351,7 @@ public class Menu {
     private static ArrayList<Integer> findSimilarHomesTwoArray(ArrayList<Integer> arrayFlights, ArrayList<Integer> arraySimilarFlights) {
         ArrayList<Integer> arraySharingArrays = new ArrayList<>();
         if (arraySimilarFlights.size() == 0) {
-            arraySimilarFlights = arrayFlights;
+            return arrayFlights;
         }
         for (int i = 0; i < arraySimilarFlights.size(); i++) {
             for (int j = 0; j < arrayFlights.size(); j++) {
@@ -358,7 +359,6 @@ public class Menu {
                     arraySharingArrays.add(arrayFlights.get(j));
             }
         }
-        arrayFlights = new ArrayList<>();
         return arraySharingArrays;
     }
 
