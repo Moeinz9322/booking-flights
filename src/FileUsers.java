@@ -3,7 +3,6 @@ import java.io.RandomAccessFile;
 
 public class FileUsers extends File {
     public static final int RECORD_LENGTH = 64;
-
     public FileUsers(RandomAccessFile file) {
         super(file);
     }

@@ -474,8 +474,7 @@ public class Menu {
 
     private void addCharge(int userId) throws IOException {
         clearScreen();
-        RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
-        FileUsers fileUsers = new FileUsers(file);
+        RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                   Add charge                  "
@@ -489,6 +488,7 @@ public class Menu {
         file.writeInt(charge);
         System.out.println("charge : " + charge);
         pauseInputEnter();
+        file.close();
     }
 
     private static void clearScreen() {
