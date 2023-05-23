@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Menu {
 
@@ -468,9 +469,15 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private void bookedTickets(int userId) {
+    private void bookedTickets(int userId) throws IOException {
         clearScreen();
-        Users users = null;
+
+        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat","rw");
+        FileUsers fileUsers = new FileUsers(usersFile);
+        usersFile.seek(userId*FileUsers.RECORD_LENGTH);
+
+        ArrayList<Ticket> tickets = arrayOfTickets(fileUsers.readFixString());
+
         System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%s\n"
                 , "FlightId"
                 , "Origin"
@@ -481,21 +488,39 @@ public class Menu {
                 , "Ticket Id"
                 , "............................................................................................"
         );
-        for (int i = 0; i < users.user.getNumberTickets(); i++) {
-            if (users.user.getTickets()[i] != null) {
-                System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%-12s\n"
-                        , users.user.getTickets()[i].getFlightId()
-                        , users.user.getTickets()[i].getOrigin()
-                        , users.user.getTickets()[i].getDestination()
-                        , users.user.getTickets()[i].getDate()
-                        , users.user.getTickets()[i].getTime()
-                        , users.user.getTickets()[i].getPrice()
-                        , users.user.getTickets()[i].getTicketId()
-                        , "............................................................................................"
-                );
-            }
+        for (Ticket ticket : tickets) {
+            System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%-12s\n"
+                    , ticket.getFlightId()
+                    , ticket.getOrigin()
+                    , ticket.getDestination()
+                    , ticket.getDate()
+                    , ticket.getTime()
+                    , ticket.getPrice()
+                    , ticket.getTicketId()
+                    , "............................................................................................"
+            );
         }
         pauseInputEnter();
+    }
+
+    private ArrayList<Ticket> arrayOfTickets(String username) throws IOException {
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        RandomAccessFile ticketsFile = new RandomAccessFile("fileTickets.dat","rw");
+        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat","rw");
+        FileTickets fileTickets = new FileTickets(ticketsFile);
+        FileFlight fileFlight = new FileFlight(flightsFile);
+//        Admin admin = new Admin(null,null,null);
+        Flight flight = null;
+        for (int i = 0; i < ticketsFile.length()/FileTickets.RECORD_LENGTH; i++) {
+            ticketsFile.seek(i*FileTickets.RECORD_LENGTH);
+            if (fileTickets.readFixString().equals(username)){
+                flightsFile.seek(Admin.findFlightId(fileTickets.readFixString())*FileFlight.RECORD_LENGTH);
+                flight = fileFlight.read();
+                tickets.add(new Ticket(flight.getFlightId(),flight.getOrigin(),flight.getDestination()
+                        ,flight.getDateFlight(),flight.getTimeFlight(),flight.getPrice(),fileTickets.readFixString()));
+            }
+        }
+        return tickets;
     }
 
     private void addCharge(int userId) throws IOException {

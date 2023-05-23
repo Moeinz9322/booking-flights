@@ -57,7 +57,6 @@ public class Users {
         usersFile.seek(userId*fileUsers.RECORD_LENGTH+4*fileUsers.FIX_SIZE);
         usersFile.writeInt(charge);
         user = new User(null,null,0,null,0,0);
-        System.out.println(userId + " " + numberFlight);
         usersFile.close();
         flightsFile.close();
         user.addTicket(userId , numberFlight);

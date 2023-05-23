@@ -94,7 +94,7 @@ public class User {
         String username = fileUsers.readFixString();
         String flightId = fileFlight.readFixString();
         fileTickets.write(username,flightId,ticketId2);
-        
+
         System.out.println(ticketId2);
 
     }
