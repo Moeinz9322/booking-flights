@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
+//username 30
+//password 30
+//charge 4
 public class FileUsers extends File {
     public static final int RECORD_LENGTH = 64;
     public FileUsers(RandomAccessFile file) {

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -260,7 +261,10 @@ public class Admin {
         return priceSimilar;
     }
 
-    public void changeSeats(int numberFlight, int seats) {
-        flights[numberFlight].setSeats(seats);
+    public void changeSeats(int numberFlight, int seats) throws IOException {
+        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat","rw");
+        FileFlight fileFlight = new FileFlight(flightsFile);
+        flightsFile.seek(numberFlight*FileFlight.RECORD_LENGTH+ fileFlight.FIX_SIZE*10+4);
+        flightsFile.writeInt(seats);
     }
 }

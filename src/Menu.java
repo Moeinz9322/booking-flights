@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Menu {
 
-    public static void startMenu(Users users) throws IOException {
+    public static void startMenu() throws IOException {
         Menu menu = new Menu();
         String input;
         while (true) {
@@ -14,7 +14,7 @@ public class Menu {
             clearScreen();
             switch (input) {
                 case "1", "SIGN IN":
-                    menu.signIn(users);
+                    menu.signIn();
                     break;
                 case "2", "SIGN UP":
                     menu.signUp();
@@ -34,7 +34,7 @@ public class Menu {
         );
     }
 
-    private void signIn(Users users) throws IOException {
+    private void signIn() throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -43,9 +43,14 @@ public class Menu {
                 , "* username : "
         );
         String userId = Input.inputInSignIn();
+//        System.out.println(userId);
+//        RandomAccessFile file = new RandomAccessFile("fileUsers.dat","rw");
+//        FileUsers fileUsers = new FileUsers(file);
+//        file.seek(Integer.valueOf(userId)*FileUsers.RECORD_LENGTH);
+//        System.out.println(fileUsers.readFixString()+fileUsers.readFixString()+file.readInt());
         switch (userId) {
             case "admin":
-                adminMenu(users.admin);
+                adminMenu();
                 break;
             case "-1":
                 System.out.println("Please check your password or username :(\n" +
@@ -54,7 +59,7 @@ public class Menu {
                 Input.inputString();
                 break;
             default:
-                userMenu(users, Integer.valueOf(userId));
+                userMenu(Integer.valueOf(userId));
         }
     }
 
@@ -79,11 +84,14 @@ public class Menu {
         fileUsers.writeString(Input.inputString());
         file.writeInt(0);
         System.out.println("successful ...");
+//        System.out.println(username);
         pauseInputEnter();
+        file.close();
     }
 
-    private static void adminMenu(Admin admin) throws IOException {
+    private static void adminMenu() throws IOException {
         Input input = new Input();
+        Admin admin = new Admin(null,null,null);
         boolean flag = true;
         while (flag) {
             clearScreen();
@@ -110,11 +118,7 @@ public class Menu {
                     removeFlight();
                     break;
                 case "4", "FLIGHT SCHEDULES":
-                    try {
-                        admin.flightSchedules();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    admin.flightSchedules();
                     pauseInputEnter();
                     break;
                 case "0", "SIGN OUT":
@@ -139,17 +143,20 @@ public class Menu {
         if (numberFlight == -1) {
             System.out.println("Please check flight id :(");
             pauseInputEnter();
+            file.close();
             return;
         }
         file.seek(numberFlight * 162 + 154);
         if (file.readInt() != file.readInt()) {
             System.out.println("You can't remove this flight because it is reserved by the user :(");
             pauseInputEnter();
+            file.close();
             return;
         }
         admin.removeFlight(numberFlight);
         System.out.println("successful :) ...\n Press enter to return to the previous menu");
         Input.inputString();
+        file.close();
     }
 
     private static void updateFlightMenu() throws IOException {
@@ -167,12 +174,14 @@ public class Menu {
         if (numberFlight == -1) {
             System.out.println("Please check flight id :(");
             pauseInputEnter();
+            file.close();
             return;
         }
         file.seek(numberFlight * 162 + 154);
         if (file.readInt() != file.readInt()) {
             System.out.println("You can't update this flight because it is reserved by the user :(");
             pauseInputEnter();
+            file.close();
             return;
         }
         //can remove in update
@@ -193,11 +202,13 @@ public class Menu {
         if (input.equals("1") || input.equals("YES")) {//can remove in update
             admin.removeFlight(numberFlight);
             pauseInputEnter();
+            file.close();
             return;
         }
         admin.updateFlight(Input.inputForUpdateFlight(), numberFlight);
         System.out.println("successful :) ...");
         pauseInputEnter();
+        file.close();
     }
 
     private static void addFlightMenu() {
@@ -212,7 +223,7 @@ public class Menu {
         pauseInputEnter();
     }
 
-    private static void userMenu(Users users, int userId) throws IOException {
+    private static void userMenu(int userId) throws IOException {
         Menu menu = new Menu();
         boolean flag = true;
         while (flag) {
@@ -239,13 +250,13 @@ public class Menu {
                     searchFlight();
                     break;
                 case "3":
-                    menu.bookingTicket(users, userId);
+                    menu.bookingTicket(userId);
                     break;
                 case "4":
-                    menu.ticketCancellation(users, userId);
+                    menu.ticketCancellation(userId);
                     break;
                 case "5":
-                    menu.bookedTickets(users, userId);
+                    menu.bookedTickets(userId);
                     break;
                 case "6":
                     menu.addCharge(userId);
@@ -395,8 +406,11 @@ public class Menu {
         );
     }
 
-    private void bookingTicket(Users users, int userId) throws IOException {
+    private void bookingTicket(int userId) throws IOException {
+        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat","rw");
+        RandomAccessFile flightFile = new RandomAccessFile("fileFlights.dat","rw");
         clearScreen();
+        Users users = new Users(null,null);
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                Booking ticket                 "
@@ -407,26 +421,37 @@ public class Menu {
         if (numberFlight == -1) {
             System.out.println("Please check Flight Id");
             pauseInputEnter();
+            usersFile.close();
+            flightFile.close();
             return;
         }
-
-        if (users.admin.getFlights()[numberFlight].getPrice() > users.customers[userId].getCharge()) {
+        flightFile.seek(numberFlight*FileFlight.RECORD_LENGTH+150);
+        usersFile.seek(userId*FileUsers.RECORD_LENGTH+60);
+        if (flightFile.readInt() > usersFile.readInt()) {
             System.out.println("Please check your charge ...");
             pauseInputEnter();
+            usersFile.close();
+            flightFile.close();
             return;
         }
 
-        if (users.admin.getFlights()[numberFlight].getSeats() < 0) {
+        flightFile.seek(numberFlight*FileFlight.RECORD_LENGTH+154);
+        if (flightFile.readInt() < 0) {
             System.out.println("It has no capacity");
             pauseInputEnter();
+            usersFile.close();
+            flightFile.close();
             return;
         }
-        users.bookingTicket(userId, numberFlight);
+        users.bookingTicket(userId , numberFlight);
         pauseInputEnter();
+        usersFile.close();
+        flightFile.close();
     }
 
-    private void ticketCancellation(Users users, int userId) throws IOException {
+    private void ticketCancellation(int userId) throws IOException {
         clearScreen();
+        Users users = new Users(null,null);
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "              Ticket cancellation              "
@@ -434,17 +459,18 @@ public class Menu {
                 , "* Ticket Id : "
         );
         String ticketId = Input.inputStringNotNull();
-        int numberTicket = users.customers[userId].findTicketId(ticketId);
+        int numberTicket = users.user.findTicketId(ticketId);
         if (numberTicket == -1) {
             System.out.println("Please check Ticket Id ...");
         } else {
-            users.customers[userId].ticketCancellation(users.admin, numberTicket);
+            users.user.ticketCancellation(users.admin, numberTicket);
         }
         pauseInputEnter();
     }
 
-    private void bookedTickets(Users users, int userId) {
+    private void bookedTickets(int userId) {
         clearScreen();
+        Users users = null;
         System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%s\n"
                 , "FlightId"
                 , "Origin"
@@ -455,16 +481,16 @@ public class Menu {
                 , "Ticket Id"
                 , "............................................................................................"
         );
-        for (int i = 0; i < users.customers[userId].getNumberTickets(); i++) {
-            if (users.customers[userId].getTickets()[i] != null) {
+        for (int i = 0; i < users.user.getNumberTickets(); i++) {
+            if (users.user.getTickets()[i] != null) {
                 System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%-12s\n"
-                        , users.customers[userId].getTickets()[i].getFlightId()
-                        , users.customers[userId].getTickets()[i].getOrigin()
-                        , users.customers[userId].getTickets()[i].getDestination()
-                        , users.customers[userId].getTickets()[i].getDate()
-                        , users.customers[userId].getTickets()[i].getTime()
-                        , users.customers[userId].getTickets()[i].getPrice()
-                        , users.customers[userId].getTickets()[i].getTicketId()
+                        , users.user.getTickets()[i].getFlightId()
+                        , users.user.getTickets()[i].getOrigin()
+                        , users.user.getTickets()[i].getDestination()
+                        , users.user.getTickets()[i].getDate()
+                        , users.user.getTickets()[i].getTime()
+                        , users.user.getTickets()[i].getPrice()
+                        , users.user.getTickets()[i].getTicketId()
                         , "............................................................................................"
                 );
             }

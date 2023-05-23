@@ -3,7 +3,7 @@ import java.io.RandomAccessFile;
 
 public abstract class File {
     RandomAccessFile file;
-    protected final int FIX_SIZE = 15;
+    public final int FIX_SIZE = 15;
 
     public File(RandomAccessFile file) {
         this.file = file;

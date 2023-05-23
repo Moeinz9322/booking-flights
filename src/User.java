@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Random;
 
 public class User {
@@ -7,7 +8,6 @@ public class User {
     private int charge;
     private Ticket[] tickets;
     private int numberTickets;
-
     private int ticketId;
 
     public User(String username, String password, int charge, Ticket[] tickets, int numberTickets, int ticketId) {
@@ -70,28 +70,33 @@ public class User {
     /**
      * این تابع یک بلیط را به بلیط ها اضافه می‌کند
      *
-     * @param admin
+     * @param userId
      * @param numberFlight
      */
-    public void addTicket(Admin admin, int numberFlight) {
+    public void addTicket(int userId , int numberFlight) throws IOException {
+        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat","rw");
+        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat","rw");
+        RandomAccessFile ticketsFile = new RandomAccessFile("fileTickets.dat","rw");
+        FileUsers fileUsers = new FileUsers(usersFile);
+        FileFlight fileFlight = new FileFlight(flightsFile);
+        FileTickets fileTickets = new FileTickets(ticketsFile);
 
         int ticketId1;
-        int numberTicket;
         Random random = new Random();
         ticketId1 = random.nextInt();
         if (ticketId1 < 0) ticketId1 *= -1;
         ticketId += 1;
         String ticketId2 = ticketId1 + String.valueOf(ticketId);
 
-        numberTickets += 1;
-        for (int i = 0; i < numberTickets; i++) {
-            if (tickets[i] == null) {
-                tickets[i] = new Ticket(admin.getFlights()[numberFlight].getFlightId(), admin.getFlights()[numberFlight].getOrigin(), admin.getFlights()[numberFlight].getDestination(), admin.getFlights()[numberFlight].getDateFlight(), admin.getFlights()[numberFlight].getTimeFlight(), admin.getFlights()[numberFlight].getPrice(), ticketId2);
-                numberTicket = i;
-                System.out.println(tickets[numberTicket].getTicketId());
-                break;
-            }
-        }
+        usersFile.seek(userId*FileUsers.RECORD_LENGTH);
+        flightsFile.seek(numberFlight*FileFlight.RECORD_LENGTH);
+        ticketsFile.seek(ticketsFile.length());
+        String username = fileUsers.readFixString();
+        String flightId = fileFlight.readFixString();
+        fileTickets.write(username,flightId,ticketId2);
+        
+        System.out.println(ticketId2);
+
     }
 
     public int findTicketId(String ticketId) {

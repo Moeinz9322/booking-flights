@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class FileFlight extends File {
-
+    public static final int RECORD_LENGTH = 162;
     public FileFlight(RandomAccessFile file) {
         super(file);
     }

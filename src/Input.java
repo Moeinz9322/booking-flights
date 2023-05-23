@@ -86,18 +86,24 @@ public class Input {
         switch (userId) {
             case "admin" -> {
                 file.seek(fileUsers.FIX_SIZE * 2);
-                if (password.equals(fileUsers.readFixString()))
+                if (password.equals(fileUsers.readFixString())){
+                    file.close();
                     return "admin";
+                }
             }
             case "-1" -> {
+                file.close();
                 return "-1";
             }
             default -> {
                 file.seek(Integer.valueOf(userId) * fileUsers.RECORD_LENGTH + fileUsers.FIX_SIZE * 2);
-                if (password.equals(fileUsers.readFixString()))
+                if (password.equals(fileUsers.readFixString())){
+                    file.close();
                     return userId;
+                }
             }
         }
+        file.close();
         return "-1";
     }
 
@@ -113,6 +119,7 @@ public class Input {
                 System.out.println("please change your username");
             }
         }
+        file.close();
         return username;
     }
 
@@ -267,6 +274,7 @@ public class Input {
         System.out.print("* Current Password : ");
         if (!inputString().equals(fileUsers.readFixString())) {
             System.out.println("Please check your password:(");
+            file.close();
             return;
         }
         System.out.print("* New Password : ");
@@ -278,8 +286,10 @@ public class Input {
             if (newPassword.equals(confirmPassword)) {
                 fileUsers.writeString(newPassword);
                 System.out.println("successful ...");
+                file.close();
                 return;
             } else {
+                file.close();
                 System.out.println("The confirm password is false please check it :(");
             }
         }

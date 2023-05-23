@@ -1,20 +1,23 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.channels.UnresolvedAddressException;
 
 public class Users {
-    User[] customers;
+    User user;
     Admin admin;
 
-    public Users(User[] customers, Admin admin) {
-        this.customers = customers;
+    public Users(User user, Admin admin) {
+        this.user = user;
         this.admin = admin;
     }
 
-    public User[] getCustomers() {
-        return customers;
+    public User getCustomers() {
+        return user;
     }
 
-    public void setCustomers(User[] customers) {
-        this.customers = customers;
+    public void setCustomers(User user) {
+        this.user = user;
     }
 
     public Admin getAdmin() {
@@ -38,13 +41,25 @@ public class Users {
 //        return "-1";
 //    }
 
-    public void bookingTicket(int userId, int numberFlight) {
-        admin.changeSeats(numberFlight, admin.getFlights()[numberFlight].getSeats() - 1);
+    public void bookingTicket(int userId, int numberFlight) throws IOException {
+        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat","rw");
+        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat","rw");
+        FileUsers fileUsers = new FileUsers(usersFile);
+        FileFlight fileFlight = new FileFlight(flightsFile);
 
-        customers[userId].setCharge(customers[userId].getCharge() - admin.getFlights()[numberFlight].getPrice());
+        flightsFile.seek(numberFlight*FileFlight.RECORD_LENGTH+ fileFlight.FIX_SIZE*10+4);
+        admin=new Admin(null,null,null);
+        admin.changeSeats(numberFlight, flightsFile.readInt() - 1);
 
-        customers[userId].setNumberTickets(customers[userId].getNumberTickets() + 1);
-
-        customers[userId].addTicket(admin, numberFlight);
+        flightsFile.seek(numberFlight*FileFlight.RECORD_LENGTH+ fileFlight.FIX_SIZE*10);
+        usersFile.seek(userId*fileUsers.RECORD_LENGTH+4*fileUsers.FIX_SIZE);
+        int charge = usersFile.readInt() - flightsFile.readInt();
+        usersFile.seek(userId*fileUsers.RECORD_LENGTH+4*fileUsers.FIX_SIZE);
+        usersFile.writeInt(charge);
+        user = new User(null,null,0,null,0,0);
+        System.out.println(userId + " " + numberFlight);
+        usersFile.close();
+        flightsFile.close();
+        user.addTicket(userId , numberFlight);
     }
 }

@@ -21,8 +21,6 @@ public class Main {
                 , new TimeFlight("08", "00"), 900000, 245, 245);
         flights[2] = new Flight("BG-22", "shiraz", "tabriz", new DateFlight("1401", "12", "12")
                 , new TimeFlight("22", "30"), 1100000, 12, 12);
-        Admin admin = new Admin("Admin", "Admin", flights);
-        Users users = new Users(new User[NUMBER_OF_USER], admin);
         try {
             RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
             FileFlight fileFlight = new FileFlight(file);
@@ -39,7 +37,9 @@ public class Main {
             fileFlight.write(flights[0]);
             file.seek(0);
             System.out.println(fileFlight.read().toString());
-            Menu.startMenu(users);
+            file.close();
+            file2.close();
+            Menu.startMenu();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
