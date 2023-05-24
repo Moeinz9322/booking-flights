@@ -92,7 +92,7 @@ public class Menu {
 
     private static void adminMenu() throws IOException {
         Input input = new Input();
-        Admin admin = new Admin(null,null,null);
+        Admin admin = new Admin(null, null, null);
         boolean flag = true;
         while (flag) {
             clearScreen();
@@ -408,10 +408,10 @@ public class Menu {
     }
 
     private void bookingTicket(int userId) throws IOException {
-        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat","rw");
-        RandomAccessFile flightFile = new RandomAccessFile("fileFlights.dat","rw");
+        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat", "rw");
+        RandomAccessFile flightFile = new RandomAccessFile("fileFlights.dat", "rw");
         clearScreen();
-        Users users = new Users(null,null);
+        Users users = new Users(null, null);
         System.out.printf("%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "                Booking ticket                 "
@@ -426,8 +426,8 @@ public class Menu {
             flightFile.close();
             return;
         }
-        flightFile.seek(numberFlight*FileFlight.RECORD_LENGTH+150);
-        usersFile.seek(userId*FileUsers.RECORD_LENGTH+60);
+        flightFile.seek(numberFlight * FileFlight.RECORD_LENGTH + 150);
+        usersFile.seek(userId * FileUsers.RECORD_LENGTH + 60);
         if (flightFile.readInt() > usersFile.readInt()) {
             System.out.println("Please check your charge ...");
             pauseInputEnter();
@@ -436,7 +436,7 @@ public class Menu {
             return;
         }
 
-        flightFile.seek(numberFlight*FileFlight.RECORD_LENGTH+154);
+        flightFile.seek(numberFlight * FileFlight.RECORD_LENGTH + 154);
         if (flightFile.readInt() < 0) {
             System.out.println("It has no capacity");
             pauseInputEnter();
@@ -444,7 +444,7 @@ public class Menu {
             flightFile.close();
             return;
         }
-        users.bookingTicket(userId , numberFlight);
+        users.bookingTicket(userId, numberFlight);
         pauseInputEnter();
         usersFile.close();
         flightFile.close();
@@ -452,7 +452,7 @@ public class Menu {
 
     private void ticketCancellation(int userId) throws IOException {
         clearScreen();
-        Users users = new Users(null,null);
+        User user = new User(null, null, 0, null, 0, 0);
         System.out.printf("%s\n%s\n%s\n%s"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "              Ticket cancellation              "
@@ -460,11 +460,11 @@ public class Menu {
                 , "* Ticket Id : "
         );
         String ticketId = Input.inputStringNotNull();
-        int numberTicket = users.user.findTicketId(ticketId);
+        int numberTicket = user.findTicketId(ticketId);
         if (numberTicket == -1) {
             System.out.println("Please check Ticket Id ...");
         } else {
-            users.user.ticketCancellation(users.admin, numberTicket);
+            user.ticketCancellation(userId, numberTicket);
         }
         pauseInputEnter();
     }
@@ -472,9 +472,9 @@ public class Menu {
     private void bookedTickets(int userId) throws IOException {
         clearScreen();
 
-        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat","rw");
+        RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat", "rw");
         FileUsers fileUsers = new FileUsers(usersFile);
-        usersFile.seek(userId*FileUsers.RECORD_LENGTH);
+        usersFile.seek(userId * FileUsers.RECORD_LENGTH);
 
         ArrayList<Ticket> tickets = arrayOfTickets(fileUsers.readFixString());
 
@@ -505,19 +505,19 @@ public class Menu {
 
     private ArrayList<Ticket> arrayOfTickets(String username) throws IOException {
         ArrayList<Ticket> tickets = new ArrayList<>();
-        RandomAccessFile ticketsFile = new RandomAccessFile("fileTickets.dat","rw");
-        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat","rw");
+        RandomAccessFile ticketsFile = new RandomAccessFile("fileTickets.dat", "rw");
+        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat", "rw");
         FileTickets fileTickets = new FileTickets(ticketsFile);
         FileFlight fileFlight = new FileFlight(flightsFile);
 //        Admin admin = new Admin(null,null,null);
         Flight flight = null;
-        for (int i = 0; i < ticketsFile.length()/FileTickets.RECORD_LENGTH; i++) {
-            ticketsFile.seek(i*FileTickets.RECORD_LENGTH);
-            if (fileTickets.readFixString().equals(username)){
-                flightsFile.seek(Admin.findFlightId(fileTickets.readFixString())*FileFlight.RECORD_LENGTH);
+        for (int i = 0; i < ticketsFile.length() / FileTickets.RECORD_LENGTH; i++) {
+            ticketsFile.seek(i * FileTickets.RECORD_LENGTH);
+            if (fileTickets.readFixString().equals(username)) {
+                flightsFile.seek(Admin.findFlightId(fileTickets.readFixString()) * FileFlight.RECORD_LENGTH);
                 flight = fileFlight.read();
-                tickets.add(new Ticket(flight.getFlightId(),flight.getOrigin(),flight.getDestination()
-                        ,flight.getDateFlight(),flight.getTimeFlight(),flight.getPrice(),fileTickets.readFixString()));
+                tickets.add(new Ticket(flight.getFlightId(), flight.getOrigin(), flight.getDestination()
+                        , flight.getDateFlight(), flight.getTimeFlight(), flight.getPrice(), fileTickets.readFixString()));
             }
         }
         return tickets;
@@ -532,10 +532,10 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* price : "
         );
-        file.seek(userId*64+60);
+        file.seek(userId * 64 + 60);
         int charge = file.readInt() + Integer.parseInt(Input.inputIntegerNotNullToString());
 
-        file.seek(userId*64+60);
+        file.seek(userId * 64 + 60);
         file.writeInt(charge);
         System.out.println("charge : " + charge);
         pauseInputEnter();

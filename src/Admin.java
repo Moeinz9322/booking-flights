@@ -159,7 +159,7 @@ public class Admin {
         FileFlight fileFlight = new FileFlight(file);
         ArrayList<Integer> originSimilar = new ArrayList<>();
         for (int i = 0; i < file.length() / 162; i++) {
-            file.seek(i * 162+30);
+            file.seek(i * 162 + 30);
             if (fileFlight.readFixString().equals(origin)) {
                 originSimilar.add(i);
             }
@@ -178,7 +178,7 @@ public class Admin {
         FileFlight fileFlight = new FileFlight(file);
         ArrayList<Integer> destinationSimilar = new ArrayList<>();
         for (int i = 0; i < file.length() / 162; i++) {
-            file.seek(i * 162+60);
+            file.seek(i * 162 + 60);
             if (fileFlight.readFixString().equals(destination)) {
                 destinationSimilar.add(i);
             }
@@ -203,7 +203,7 @@ public class Admin {
         double sinceDate = 10000 * Integer.parseInt(since.getYear()) + 100 * Integer.parseInt(since.getMonth()) + Integer.parseInt(since.getDay());
         double upToDate = 10000 * Integer.parseInt(until.getYear()) + 100 * Integer.parseInt(until.getMonth()) + Integer.parseInt(until.getDay());
         for (int i = 0; i < file.length() / 162; i++) {
-            file.seek(i * 162+90);
+            file.seek(i * 162 + 90);
             date = fileFlight.readDate();
             dateAmount = 10000 * Integer.parseInt(date.getYear()) +
                     Integer.parseInt(date.getMonth()) * 100 +
@@ -231,7 +231,7 @@ public class Admin {
         double sinceTime = 100 * Integer.parseInt(since.getHours()) + Integer.parseInt(since.getMinutes());
         double upToTime = 100 * Integer.parseInt(until.getHours()) + Integer.parseInt(until.getMinutes());
         for (int i = 0; i < file.length(); i++) {
-            file.seek(i * 162+120);
+            file.seek(i * 162 + 120);
             time = fileFlight.readTime();
             timeAmount = 100 * Integer.parseInt(time.getHours()) + Integer.parseInt(time.getMinutes());
             if (sinceTime <= timeAmount && timeAmount <= upToTime) {
@@ -253,7 +253,7 @@ public class Admin {
         FileFlight fileFlight = new FileFlight(file);
         ArrayList<Integer> priceSimilar = new ArrayList<>();
         for (int i = 0; i < file.length(); i++) {
-            file.seek(i*162+150);
+            file.seek(i * 162 + 150);
             if (file.readInt() <= upToPrice) {
                 priceSimilar.add(i);
             }
@@ -262,9 +262,9 @@ public class Admin {
     }
 
     public void changeSeats(int numberFlight, int seats) throws IOException {
-        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat","rw");
+        RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(flightsFile);
-        flightsFile.seek(numberFlight*FileFlight.RECORD_LENGTH+ fileFlight.FIX_SIZE*10+4);
+        flightsFile.seek(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10 + 4);
         flightsFile.writeInt(seats);
     }
 }

@@ -18,6 +18,7 @@ public abstract class File {
     public void writeString(String str) throws IOException {
         file.writeChars(fixSizeToWrite(str));
     }
+
     public String fixSizeToWrite(String str) {
         while (str.length() < FIX_SIZE) {
             str += " ";

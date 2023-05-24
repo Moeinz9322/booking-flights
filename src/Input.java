@@ -86,7 +86,7 @@ public class Input {
         switch (userId) {
             case "admin" -> {
                 file.seek(fileUsers.FIX_SIZE * 2);
-                if (password.equals(fileUsers.readFixString())){
+                if (password.equals(fileUsers.readFixString())) {
                     file.close();
                     return "admin";
                 }
@@ -97,7 +97,7 @@ public class Input {
             }
             default -> {
                 file.seek(Integer.valueOf(userId) * fileUsers.RECORD_LENGTH + fileUsers.FIX_SIZE * 2);
-                if (password.equals(fileUsers.readFixString())){
+                if (password.equals(fileUsers.readFixString())) {
                     file.close();
                     return userId;
                 }
