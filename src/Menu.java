@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Menu {
 
@@ -24,6 +23,9 @@ public class Menu {
         }
     }
 
+    /**
+     * print start menu
+     */
     private void printMenu() {
         System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n"
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
@@ -35,6 +37,9 @@ public class Menu {
         );
     }
 
+    /**
+     * sign Menu
+     */
     private void signIn() throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s"
@@ -49,9 +54,10 @@ public class Menu {
                 adminMenu();
                 break;
             case "-1":
-                System.out.println("Please check your password or username :(\n" +
-                        "if you haven't registered yet, you can register in the sign up section :)\n" +
-                        "Press enter to return to the previous menu");
+                System.out.println("""
+                        Please check your password or username :(
+                        if you haven't registered yet, you can register in the sign up section :)
+                        Press enter to return to the previous menu""");
                 Input.inputString();
                 break;
             default:
@@ -85,6 +91,10 @@ public class Menu {
         file.close();
     }
 
+    /**
+     * admin Menu
+     * throws IOException
+     */
     private static void adminMenu() throws IOException {
         Input input = new Input();
         Admin admin = new Admin(null, null, null);
@@ -124,6 +134,10 @@ public class Menu {
         }
     }
 
+    /**
+     * print remove flight and call admin.removeFlight(int numberFlight)
+     * throws IOException
+     */
     private static void removeFlight() throws IOException {
         clearScreen();
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -142,7 +156,7 @@ public class Menu {
             file.close();
             return;
         }
-        file.seek(numberFlight * 162 + 154);
+        file.seek(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10 + 4);
         if (file.readInt() != file.readInt()) {
             System.out.println("You can't remove this flight because it is reserved by the user :(");
             pauseInputEnter();
@@ -155,6 +169,10 @@ public class Menu {
         file.close();
     }
 
+    /**
+     * update flight for admin and call some method in admin and input class
+     * throws IOException
+     */
     private static void updateFlightMenu() throws IOException {
         clearScreen();
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -173,7 +191,7 @@ public class Menu {
             file.close();
             return;
         }
-        file.seek(numberFlight * 162 + 154);
+        file.seek(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10 + 4);
         if (file.readInt() != file.readInt()) {
             System.out.println("You can't update this flight because it is reserved by the user :(");
             pauseInputEnter();
@@ -207,6 +225,9 @@ public class Menu {
         file.close();
     }
 
+    /**
+     * add flight for admin and call some method in admin and input class
+     */
     private static void addFlightMenu() {
         clearScreen();
         Admin admin = new Admin(null, null, null);
@@ -219,6 +240,10 @@ public class Menu {
         pauseInputEnter();
     }
 
+    /**
+     * user Menu
+     * To increase the speed and because of the high need, give a userId pass
+     */
     private static void userMenu(int userId) throws IOException {
         Menu menu = new Menu();
         boolean flag = true;
@@ -264,6 +289,9 @@ public class Menu {
         }
     }
 
+    /**
+     * change password in user Menu and call input.inputForChangePassword(int userId)
+     */
     private static void changePassword(int userId) throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n"
@@ -276,6 +304,16 @@ public class Menu {
         pauseInputEnter();
     }
 
+    /**
+     * اگر خط هایی را که روبروی آن نوشته شده comment// را کامنت کنید آنگاه در سرچ براساس فیلدی که یافت می‌شود سرچ می‌شود
+     * و نیافتن یک فیلد باعث نمی‌شود که به Not found بر بخورید
+     * مثلا وقتی مقصد را تهران وارد کنید
+     * در حالی که پروازی با مقصد تهران وجود نداشته باشد ولی بقیه فیلد های پر شده موجود باشد
+     * فیلدی که موجود نیست (مقصد) درنظر گرفته نمی‌شود و سرچ بر اساس فیلد های موجود انجام می‌شود
+     * پس توصیه میشود که خط کد هایی که با comment// مشخص شده اند را کامنت کنید
+     * تا جستجو حتی وقتی فیلدی یافت نشد نتیجه داشته باشد
+     * throws IOException
+     */
     private static void searchFlight() throws IOException {
         clearScreen();
         System.out.printf("%s\n%s\n%s\n%s\n"
@@ -298,6 +336,7 @@ public class Menu {
                 upToDate = Input.inputDateForSearch();
                 if (upToDate.getYear() != null)
                     break;
+                System.out.println("You should fill this section :) ---> ");
             }
         }
         System.out.println("(Sine)");
@@ -309,6 +348,7 @@ public class Menu {
                 upToTime = Input.inputTimeForSearch();
                 if (upToTime.getHours() != null)
                     break;
+                System.out.println("You should fill this section :) ---> ");
             }
         }
         System.out.println("(From)");
@@ -359,7 +399,7 @@ public class Menu {
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
         if (arraySimilarFlights.size() == 0) wasFound = false;
-        if (wasFound == true) {
+        if (wasFound) {
             admin.printFlightForSearch(arraySimilarFlights);
             pauseInputEnter();
         } else {
@@ -370,10 +410,9 @@ public class Menu {
 
     /**
      * این تابع برای مقایسه دو آرایه است که اگر در سرچ چند فیلد فیلتر شده باشد را مقایسه می‌کند
-     *
-     * @param arrayFlights
-     * @param arraySimilarFlights
-     * @return لیستی از پرواز های با فیلد مشابه
+     * param arrayFlights
+     * param arraySimilarFlights
+     * return لیستی از پرواز های با فیلد مشابه
      */
     private static ArrayList<Integer> findSimilarHomesTwoArray(ArrayList<Integer> arrayFlights, ArrayList<Integer> arraySimilarFlights) {
         ArrayList<Integer> arraySharingArrays = new ArrayList<>();
@@ -465,6 +504,11 @@ public class Menu {
         flightFile.close();
     }
 
+    /**
+     * for cancel a ticket shift some records in fileTickets
+     * param userId
+     * throws IOException
+     */
     private void ticketCancellation(int userId) throws IOException {
         clearScreen();
         User user = new User(null, null, 0, null, 0, 0);
@@ -484,6 +528,11 @@ public class Menu {
         pauseInputEnter();
     }
 
+    /**
+     * print tickets of user with userId
+     * param userId
+     * throws IOException
+     */
     private void bookedTickets(int userId) throws IOException {
         clearScreen();
 
@@ -504,7 +553,7 @@ public class Menu {
                 , "............................................................................................"
         );
         for (Ticket ticket : tickets) {
-            System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%-12s\n"
+            System.out.printf("|%-12s|%s%-11s|%s%-11s|%-12s|%-12s|%-12s|%-12s|\n%-12s\n"
                     , ticket.getFlightId()
                     , ticket.getOrigin().substring(0, 1).toUpperCase()
                     , ticket.getOrigin().substring(1)
@@ -520,6 +569,11 @@ public class Menu {
         pauseInputEnter();
     }
 
+    /**
+     * param username
+     * return list of tickets of a user with param username
+     * throws IOException
+     */
     private ArrayList<Ticket> arrayOfTickets(String username) throws IOException {
         ArrayList<Ticket> tickets = new ArrayList<>();
         RandomAccessFile ticketsFile = new RandomAccessFile("fileTickets.dat", "rw");
@@ -540,6 +594,11 @@ public class Menu {
         return tickets;
     }
 
+    /**
+     * add charge and print charge
+     * param userId
+     * throws IOException
+     */
     private void addCharge(int userId) throws IOException {
         clearScreen();
         RandomAccessFile file = new RandomAccessFile("fileUsers.dat", "rw");
@@ -559,10 +618,16 @@ public class Menu {
         file.close();
     }
 
+    /**
+     * for clean screen it Runs only in the terminal
+     */
     private static void clearScreen() {
         System.out.print("\033[H\033[2J");//This is the command to clear the screen
     }
 
+    /**
+     * Pause so the user can view the output
+     */
     private static void pauseInputEnter() {
         System.out.print("Press enter to return to the previous menu ...");
         Input.inputString();

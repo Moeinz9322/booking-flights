@@ -1,9 +1,7 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Admin {
     private String username;
@@ -42,8 +40,7 @@ public class Admin {
 
     /**
      * این تابع پرواز فرستاده شده را به لیست پرواز ها اضافه می‌کند
-     *
-     * @param flight
+     * param flight
      */
     public void addFlight(Flight flight) {
         try {
@@ -58,6 +55,12 @@ public class Admin {
         }
     }
 
+    /**
+     * update flight . Admin can select flight with flightId and then ask about remove or just change some item
+     * param flight
+     * param numberFlight
+     * throws IOException
+     */
     public void updateFlight(Flight flight, int numberFlight) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
@@ -92,19 +95,30 @@ public class Admin {
         }
     }
 
+    /**
+     * shift record for remove
+     * (All records after the record to be deleted are moved to the previous record by one record and then the file size is reduced by one record.)
+     * param numberFlight
+     * throws IOException
+     */
     public void removeFlight(int numberFlight) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
         Flight flight;
-        for (int i = numberFlight; i < file.length() / 162 - 1; i++) {
-            file.seek((i + 1) * 162);
+        for (int i = numberFlight; i < file.length() / FileFlight.RECORD_LENGTH - 1; i++) {
+            file.seek((i + 1) * FileFlight.RECORD_LENGTH);
             flight = fileFlight.read();
-            file.seek(i * 162);
+            file.seek(i * FileFlight.RECORD_LENGTH);
             fileFlight.write(flight);
         }
-        file.setLength(file.length() - 162);
+        file.setLength(file.length() - FileFlight.RECORD_LENGTH);
     }
 
+    /**
+     * create an array of Flight and then pass to Menu.printFlights(Flight[] flight)
+     * param arrayNumberFlight
+     * throws IOException
+     */
     public void printFlightForSearch(ArrayList<Integer> arrayNumberFlight) throws IOException {
         Menu.printFlightsMenu();
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "r");
@@ -118,6 +132,10 @@ public class Admin {
         Menu.printFlights(flight);
     }
 
+    /**
+     * print all of Flight in the fileFlights
+     * throws IOException
+     */
     public void flightSchedules() throws IOException {
         Menu.printFlightsMenu();
         Flight[] flights1 = new Flight[1000];
@@ -132,9 +150,8 @@ public class Admin {
 
     /**
      * این تابع شماره پروازه هایی که آیدی یکسان با آیدی فرستاده شده دارند را محاسبه می‌کند
-     *
-     * @param flightId
-     * @return
+     * param flightId
+     * return
      */
     public static int findFlightId(String flightId) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -150,9 +167,8 @@ public class Admin {
 
     /**
      * این تابع شماره پروازه هایی که مبدا یکسان با مبدا فرستاده شده دارند را محاسبه می‌کند
-     *
-     * @param origin
-     * @return numberOfFlights
+     * param origin
+     * return numberOfFlights
      */
     public ArrayList<Integer> findOriginSimilar(String origin) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -169,9 +185,8 @@ public class Admin {
 
     /**
      * این تابع شماره پروازه هایی که مقصدی مثل مقصد فرستاده شده دارند را محاسبه می‌کند
-     *
-     * @param destination
-     * @return numberOfFlights
+     * param destination
+     * return numberOfFlights
      */
     public ArrayList<Integer> findDestinationSimilar(String destination) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -189,10 +204,9 @@ public class Admin {
 
     /**
      * این تابع شماره پروازه هایی که در بازه زمانی (تاریخ) فرستاده شده است را محاسبه می‌کند
-     *
-     * @param since
-     * @param until
-     * @return numberOfFlights
+     * param since
+     * param until
+     * return numberOfFlights
      */
     public ArrayList<Integer> findDateSimilar(DateFlight since, DateFlight until) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -217,10 +231,9 @@ public class Admin {
 
     /**
      * این تابع شماره پروازه هایی که در بازه زمانی (ساعت) فرستاده شده است را محاسبه می‌کند
-     *
-     * @param since
-     * @param until
-     * @return numberOfFlights
+     * param since
+     * param until
+     * return numberOfFlights
      */
     public ArrayList<Integer> findTimeSimilar(TimeFlight since, TimeFlight until) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -243,10 +256,8 @@ public class Admin {
 
     /**
      * این تابع شماره پروازه هایی که در بازه قیمت فرستاده شده است را محاسبه می‌کند
-     *
-     * @param fromPrice
-     * @param upToPrice
-     * @return numberOfFlights
+     * param fromPrice param upToPrice
+     * return numberOfFlights
      */
     public ArrayList<Integer> findPriceSimilar(int fromPrice, int upToPrice) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
@@ -263,6 +274,12 @@ public class Admin {
         return priceSimilar;
     }
 
+    /**
+     * change seat of flight
+     * param numberFlight
+     * param seats
+     * throws IOException
+     */
     public void changeSeats(int numberFlight, int seats) throws IOException {
         RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(flightsFile);

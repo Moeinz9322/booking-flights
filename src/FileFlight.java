@@ -8,6 +8,11 @@ public class FileFlight extends File {
         super(file);
     }
 
+    /**
+     * write record of Flight
+     * param flight
+     * throws IOException
+     */
     public void write(Flight flight) throws IOException {
         file.writeChars(fixSizeToWrite(flight.getFlightId()));//30
         file.writeChars(fixSizeToWrite(flight.getOrigin()));//30
@@ -20,7 +25,11 @@ public class FileFlight extends File {
         //record length=162
     }
 
-
+    /**
+     * read record of Flight
+     * return
+     * throws IOException
+     */
     public Flight read() throws IOException {
         return new Flight(readFixString(), readFixString(), readFixString(), readDate()
                 , readTime(), file.readInt(), file.readInt(), file.readInt());

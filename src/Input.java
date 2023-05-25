@@ -5,13 +5,16 @@ import java.util.Scanner;
 //Check input if it was true return else print Check message
 public class Input {
     /**
-     * @return String
+     * return String
      */
     public static String inputString() {
         Scanner input0 = new Scanner(System.in);
         return input0.nextLine();
     }
 
+    /**
+     * return
+     */
     public static String inputStringNotNull() {
         String input;
         do {

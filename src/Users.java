@@ -1,7 +1,5 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.channels.UnresolvedAddressException;
 
 public class Users {
     User user;
@@ -28,19 +26,12 @@ public class Users {
         this.admin = admin;
     }
 
-//    public String findUsername(String username) {
-//        if (username.equals(admin.getUsername())) {
-//            return "admin";
-//        } else {
-//            for (int i = 0; i < customers.length; i++) {
-//                if (customers[i] != null && username.equals(customers[i].getUsername())) {
-//                    return String.valueOf(i);
-//                }
-//            }
-//        }
-//        return "-1";
-//    }
-
+    /**
+     * add a record of ticket to fileTickets and print ticketId
+     * param userId
+     * param numberFlight
+     * throws IOException
+     */
     public void bookingTicket(int userId, int numberFlight) throws IOException {
         RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat", "rw");
         RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat", "rw");

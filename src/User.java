@@ -69,9 +69,8 @@ public class User {
 
     /**
      * این تابع یک بلیط را به بلیط ها اضافه می‌کند
-     *
-     * @param userId
-     * @param numberFlight
+     * param userId
+     * param numberFlight
      */
     public void addTicket(int userId, int numberFlight) throws IOException {
         RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat", "rw");
@@ -99,6 +98,12 @@ public class User {
 
     }
 
+    /**
+     * find a ticket in fileTickets
+     * param ticketId
+     * return
+     * throws IOException
+     */
     public int findTicketId(String ticketId) throws IOException {
         RandomAccessFile file = new RandomAccessFile("fileTickets.dat", "rw");
         FileTickets fileTickets = new FileTickets(file);
@@ -111,6 +116,12 @@ public class User {
         return -1;
     }
 
+    /**
+     * cancel a ticket with shift record in the fileTickets and add charge and add seat
+     * param userId
+     * param numberTicket
+     * throws IOException
+     */
     public void ticketCancellation(int userId, int numberTicket) throws IOException {
         RandomAccessFile ticketFile = new RandomAccessFile("fileTickets.dat", "rw");
         RandomAccessFile flightFile = new RandomAccessFile("fileFlights.dat", "rw");
@@ -124,10 +135,10 @@ public class User {
         int numberFlight;
         Admin admin = new Admin(null, null, null);
         ticketFile.seek(numberTicket * FileTickets.RECORD_LENGTH + fileTickets.FIX_SIZE * 2);
-        System.out.println(numberTicket * FileTickets.RECORD_LENGTH + fileTickets.FIX_SIZE * 2);
+//        System.out.println(numberTicket * FileTickets.RECORD_LENGTH + fileTickets.FIX_SIZE * 2);
         numberFlight = admin.findFlightId(fileTickets.readFixString());
         flightFile.seek(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10 + 4);
-        System.out.println(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10);
+//        System.out.println(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10);
         admin.changeSeats(numberFlight, flightFile.readInt() + 1);
 
         flightFile.seek(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10);

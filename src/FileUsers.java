@@ -11,6 +11,11 @@ public class FileUsers extends File {
         super(file);
     }
 
+    /**
+     * found username in fileUsers and return userId
+     * param username
+     * throws IOException
+     */
     public String findUsername(String username) throws IOException {
         file.seek(0);
         if (username.equals(readFixString())) {
