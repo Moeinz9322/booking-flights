@@ -44,11 +44,6 @@ public class Menu {
                 , "* username : "
         );
         String userId = Input.inputInSignIn();
-//        System.out.println(userId);
-//        RandomAccessFile file = new RandomAccessFile("fileUsers.dat","rw");
-//        FileUsers fileUsers = new FileUsers(file);
-//        file.seek(Integer.valueOf(userId)*FileUsers.RECORD_LENGTH);
-//        System.out.println(fileUsers.readFixString()+fileUsers.readFixString()+file.readInt());
         switch (userId) {
             case "admin":
                 adminMenu();
@@ -289,6 +284,7 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "Press enter if you want to skip the field , otherwise type the desired word in front of it"
         );
+        boolean wasFound = true;
         Admin admin = new Admin(null, null, null);
         ArrayList<Integer> arraySimilarFlights = new ArrayList<>();
         ArrayList<Integer> arrayFlights;
@@ -322,35 +318,54 @@ public class Menu {
             System.out.println("(up to)");
             upToPrice = Input.inputPrice();
         }
-        // در هر if بررسی می‌شود که آیا همچین فیلدی وجود دارد و سپس با فیلد های قبل مقایسه می‌شود
+        //  در هر if بررسی می‌شود که آیا همچین فیلدی وجود دارد و سپس با فیلد های قبل مقایسه می‌شود
+        /*اگر خط هایی را که روبروی آن نوشته شده comment را کامنت کنید آنگاه در سرچ براساس فیلدی که یافت می‌شود سرچ می‌شود
+        و نیافتن یک فیلد باعث نمی‌شود که به Not found بر بخورید
+        مثلا وقتی مقصد را تهران وارد کنید
+        در حالی که پروازی با مقصد تهران وجود نداشته باشد ولی بقیه فیلد های پر شده موجود باشد
+       فیلدی که موجود نیست (مقصد) درنظر گرفته نمی‌شود و سرچ بر اساس فیلد های موجود انجام می‌شود
+       پس توصیه میشود که خط کد هایی که با comment// مشخص شده اند را کامنت کنید
+     تا جستجو حتی وقتی فیلدی یافت نشد نتیجه داشته باشد
+         */
         if (!flight.getFlightId().equals("")) {
             int flightNumber = admin.findFlightId(flight.getFlightId());
             if (flightNumber != -1) {
                 arraySimilarFlights.add(flightNumber);
-            }
+            } else wasFound = false;//comment
         }
         if (!flight.getOrigin().equals("")) {
             arrayFlights = admin.findOriginSimilar(flight.getOrigin());
+            if (arrayFlights.size() == 0) wasFound = false;//comment
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
         if (!flight.getDestination().equals("")) {
             arrayFlights = admin.findDestinationSimilar(flight.getDestination());
+            if (arrayFlights.size() == 0) wasFound = false;//comment
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
         if (flight.getDateFlight().getYear() != null && !flight.getDateFlight().equals("")) {
             arrayFlights = admin.findDateSimilar(flight.getDateFlight(), upToDate);
+            if (arrayFlights.size() == 0) wasFound = false;//comment
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
         if (flight.getTimeFlight().getHours() != null && !flight.getTimeFlight().equals("")) {
             arrayFlights = admin.findTimeSimilar(flight.getTimeFlight(), upToTime);
+            if (arrayFlights.size() == 0) wasFound = false;//comment
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
         if (flight.getPrice() != -1) {
             arrayFlights = admin.findPriceSimilar(flight.getPrice(), upToPrice);
+            if (arrayFlights.size() == 0) wasFound = false;//comment
             arraySimilarFlights = findSimilarHomesTwoArray(arrayFlights, arraySimilarFlights);
         }
-        admin.printFlightForSearch(arraySimilarFlights);
-        pauseInputEnter();
+        if (arraySimilarFlights.size() == 0) wasFound = false;
+        if (wasFound == true) {
+            admin.printFlightForSearch(arraySimilarFlights);
+            pauseInputEnter();
+        } else {
+            System.out.println("Not Found ... !!!:(\nPlease change your search fields :)");
+            pauseInputEnter();
+        }
     }
 
     /**
@@ -491,8 +506,10 @@ public class Menu {
         for (Ticket ticket : tickets) {
             System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|%-12s|\n%-12s\n"
                     , ticket.getFlightId()
-                    , ticket.getOrigin()
-                    , ticket.getDestination()
+                    , ticket.getOrigin().substring(0, 1).toUpperCase()
+                    , ticket.getOrigin().substring(1)
+                    , ticket.getDestination().substring(0, 1).toUpperCase()
+                    , ticket.getDestination().substring(1)
                     , ticket.getDate()
                     , ticket.getTime()
                     , ticket.getPrice()
@@ -532,10 +549,10 @@ public class Menu {
                 , ":::::::::::::::::::::::::::::::::::::::::::::::"
                 , "* price : "
         );
-        file.seek(userId * 64 + 60);
+        file.seek(userId * FileUsers.RECORD_LENGTH + 60);
         int charge = file.readInt() + Integer.parseInt(Input.inputIntegerNotNullToString());
-
-        file.seek(userId * 64 + 60);
+//        System.out.println(charge + "\n" + userId);
+        file.seek(userId * FileUsers.RECORD_LENGTH + 60);
         file.writeInt(charge);
         System.out.println("charge : " + charge);
         pauseInputEnter();

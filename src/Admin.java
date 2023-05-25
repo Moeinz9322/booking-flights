@@ -230,8 +230,8 @@ public class Admin {
         ArrayList<Integer> timeSimilar = new ArrayList<>();
         double sinceTime = 100 * Integer.parseInt(since.getHours()) + Integer.parseInt(since.getMinutes());
         double upToTime = 100 * Integer.parseInt(until.getHours()) + Integer.parseInt(until.getMinutes());
-        for (int i = 0; i < file.length(); i++) {
-            file.seek(i * 162 + 120);
+        for (int i = 0; i < file.length() / FileFlight.RECORD_LENGTH; i++) {
+            file.seek(i * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 8);
             time = fileFlight.readTime();
             timeAmount = 100 * Integer.parseInt(time.getHours()) + Integer.parseInt(time.getMinutes());
             if (sinceTime <= timeAmount && timeAmount <= upToTime) {
@@ -252,9 +252,11 @@ public class Admin {
         RandomAccessFile file = new RandomAccessFile("fileFlights.dat", "rw");
         FileFlight fileFlight = new FileFlight(file);
         ArrayList<Integer> priceSimilar = new ArrayList<>();
-        for (int i = 0; i < file.length(); i++) {
-            file.seek(i * 162 + 150);
-            if (file.readInt() <= upToPrice) {
+        int price;
+        for (int i = 0; i < file.length() / FileFlight.RECORD_LENGTH; i++) {
+            file.seek(i * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10);
+            price = file.readInt();
+            if (fromPrice <= price && price <= upToPrice) {
                 priceSimilar.add(i);
             }
         }

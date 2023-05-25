@@ -284,12 +284,12 @@ public class Input {
         while (true) {
             confirmPassword = inputString();
             if (newPassword.equals(confirmPassword)) {
+                file.seek(userId * fileUsers.RECORD_LENGTH + fileUsers.FIX_SIZE * 2);
                 fileUsers.writeString(newPassword);
                 System.out.println("successful ...");
                 file.close();
                 return;
             } else {
-                file.close();
                 System.out.println("The confirm password is false please check it :(");
             }
         }
