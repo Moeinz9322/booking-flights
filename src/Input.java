@@ -233,24 +233,25 @@ public class Input {
         return flight;
     }
 
-    private static TimeFlight inputTime() {
-        System.out.print("* hours : ");
-        TimeFlight time = new TimeFlight(String.valueOf(inputInteger()), "0");
-        System.out.print("* Minutes : ");
-        time.setMinutes(String.valueOf(inputInteger()));
-        return time;
-    }
+    /*
+        private static TimeFlight inputTime() {
+            System.out.print("* hours : ");
+            TimeFlight time = new TimeFlight(String.valueOf(inputInteger()), "0");
+            System.out.print("* Minutes : ");
+            time.setMinutes(String.valueOf(inputInteger()));
+            return time;
+        }
 
-    private static DateFlight inputDate() {
-        System.out.print("* year : ");
-        DateFlight date = new DateFlight(String.valueOf(inputInteger()), "0", "0");
-        System.out.print("* month : ");
-        date.setMonth(String.valueOf(inputInteger()));
-        System.out.print("* day : ");
-        date.setDay(String.valueOf(inputInteger()));
-        return date;
-    }
-
+        private static DateFlight inputDate() {
+            System.out.print("* year : ");
+            DateFlight date = new DateFlight(String.valueOf(inputInteger()), "0", "0");
+            System.out.print("* month : ");
+            date.setMonth(String.valueOf(inputInteger()));
+            System.out.print("* day : ");
+            date.setDay(String.valueOf(inputInteger()));
+            return date;
+        }
+    */
     public static String inputForUserMenu() {
         String input = null;
         boolean flag = true;
@@ -328,7 +329,7 @@ public class Input {
         return inputStringNotNull().toLowerCase();
     }
 
-    public static DateFlight inputDateForSearch() {
+    public static DateFlight inputDate() {
         DateFlight date = new DateFlight(null, null, null);
         System.out.print("* year : ");
         int year = inputInteger();
@@ -343,7 +344,7 @@ public class Input {
         return date;
     }
 
-    public static TimeFlight inputTimeForSearch() {
+    public static TimeFlight inputTime() {
         TimeFlight time = new TimeFlight(null, null);
         System.out.print("* hours : ");
         int hours = inputInteger();

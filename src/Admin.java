@@ -76,11 +76,11 @@ public class Admin {
             file.seek(numberFlight * 162 + 60);
             fileFlight.writeString(flight.getDestination());
         }
-        if (!flight.getDateFlight().getYear().equals("-1")) {
+        if (flight.getDateFlight().getYear() != null && !flight.getDateFlight().equals("")) {
             file.seek(numberFlight * 162 + 90);
             fileFlight.writeString(flight.getDateFlight().toString());
         }
-        if (!flight.getTimeFlight().getHours().equals("-1")) {
+        if (flight.getTimeFlight().getHours() != null && !flight.getTimeFlight().equals("")) {
             file.seek(numberFlight * 162 + 120);
             fileFlight.writeString(flight.getTimeFlight().toString());
         }

@@ -328,24 +328,24 @@ public class Menu {
         ArrayList<Integer> arrayFlights;
         Flight flight = new Flight(Input.inputFlightId(), Input.inputOrigin(), Input.inputDestination(), null, null, 0, 0, 0);
         System.out.println("(Sine)");
-        flight.setDateFlight(Input.inputDateForSearch());
+        flight.setDateFlight(Input.inputDate());
         DateFlight upToDate = null;
         if (flight.getDateFlight().getYear() != null) {// چک می‌شود اگر از زمان را کاربر پر نکرده باشد تا زمان را از او نگیرد
             System.out.println("(Until)");
             while (true) {
-                upToDate = Input.inputDateForSearch();
+                upToDate = Input.inputDate();
                 if (upToDate.getYear() != null)
                     break;
                 System.out.println("You should fill this section :) ---> ");
             }
         }
         System.out.println("(Sine)");
-        flight.setTimeFlight(Input.inputTimeForSearch());
+        flight.setTimeFlight(Input.inputTime());
         TimeFlight upToTime = null;
         if (flight.getTimeFlight().getHours() != null) {
             System.out.println("(Until)");
             while (true) {
-                upToTime = Input.inputTimeForSearch();
+                upToTime = Input.inputTime();
                 if (upToTime.getHours() != null)
                     break;
                 System.out.println("You should fill this section :) ---> ");
