@@ -115,7 +115,7 @@ public class Input {
         FileUsers fileUsers = new FileUsers(file);
         String username;
         while (true) {
-            username = inputString();
+            username = inputStringNotNull();
             if (fileUsers.findUsername(username).equals("-1")) {
                 break;
             } else {

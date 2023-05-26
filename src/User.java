@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.Random;
 
 public class User {
@@ -76,17 +77,30 @@ public class User {
         RandomAccessFile usersFile = new RandomAccessFile("fileUsers.dat", "rw");
         RandomAccessFile flightsFile = new RandomAccessFile("fileFlights.dat", "rw");
         RandomAccessFile ticketsFile = new RandomAccessFile("fileTickets.dat", "rw");
+        RandomAccessFile ticketIdFile = new RandomAccessFile("fileTicketId.dat", "rw");
         FileUsers fileUsers = new FileUsers(usersFile);
         FileFlight fileFlight = new FileFlight(flightsFile);
         FileTickets fileTickets = new FileTickets(ticketsFile);
 
         int ticketId1;
-        Random random = new Random();
-        ticketId1 = random.nextInt();
+        if (ticketIdFile.length() == 0) {
+            ticketIdFile.seek(0);
+            ticketIdFile.writeInt(1000);
+            ticketId1 = 1000;
+        } else {
+            ticketIdFile.seek(0);
+            ticketId1 = ticketIdFile.readInt();
+            ticketId1++;
+            ticketIdFile.seek(0);
+            ticketIdFile.writeInt(ticketId1);
+        }
+/*        Random random = new Random();
+        ticketId1 = random.hashCode();
         if (ticketId1 < 0) ticketId1 *= -1;
-        ticketId += 1;
-        String ticketId2 = ticketId1 + String.valueOf(ticketId);
-
+        System.out.println(flightsFile.readInt());
+*/
+        flightsFile.seek(numberFlight * FileFlight.RECORD_LENGTH + fileFlight.FIX_SIZE * 10 + 4);
+        String ticketId2 = String.valueOf(userId) + numberFlight + String.valueOf(flightsFile.readInt() + 1) + String.valueOf(ticketId1);
         usersFile.seek(userId * FileUsers.RECORD_LENGTH);
         flightsFile.seek(numberFlight * FileFlight.RECORD_LENGTH);
         ticketsFile.seek(ticketsFile.length());
@@ -94,8 +108,10 @@ public class User {
         String flightId = fileFlight.readFixString();
         fileTickets.write(username, flightId, ticketId2);
 
-        System.out.println(ticketId2);
-
+        System.out.println("* your ticket id : " + ticketId2);
+        ticketsFile.close();
+        flightsFile.close();
+        ticketIdFile.close();
     }
 
     /**

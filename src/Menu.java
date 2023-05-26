@@ -83,7 +83,7 @@ public class Menu {
         System.out.print("* password : ");
         file.seek(file.length());
         fileUsers.writeString(username);
-        fileUsers.writeString(Input.inputString());
+        fileUsers.writeString(Input.inputStringNotNull());
         file.writeInt(0);
         System.out.println("successful ...");
 //        System.out.println(username);
@@ -491,7 +491,7 @@ public class Menu {
         }
 
         flightFile.seek(numberFlight * FileFlight.RECORD_LENGTH + 154);
-        if (flightFile.readInt() < 0) {
+        if (flightFile.readInt() <= 0) {
             System.out.println("It has no capacity");
             pauseInputEnter();
             usersFile.close();
